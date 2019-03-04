@@ -14,6 +14,11 @@ class flask_Main:
         def testshake():
             return "Testshake Succesfull"
 
+        #The login function that checks the send information with the database
+        @self.flaskApp.route("/sapp_login")
+        def login():
+            dummy = ""
+
         #Here in the bottom of the run the actual api is run with flaskapp.
         self.flaskApp.run(host="0.0.0.0")
 
