@@ -1,4 +1,5 @@
 import mysql.connector
+from flask import request
 
 class database_Handlers:
 
@@ -9,5 +10,16 @@ class database_Handlers:
         self.sapp_cursor = self.sapp_database.cursor()
 
     #The login database function
-    def login(self):
-        dummy = ""
+    def login(self, requestContent):
+        requestedUsername = requestContent["username"]
+        requestedPassword = requestContent["password"]
+
+        #Using query on the database
+        self.sapp_cursor.execute('SELECT acc_Id FROM Acc_Table WHERE acc_Username = "' + requestedUsername + '" AND acc_Password = "' + requestedPassword + '";')
+        result = self.sapp_cursor.fetchall()
+
+        if len(result) == 0:
+            return False
+        else:
+            requestedId = result[0]
+            return requestedId
