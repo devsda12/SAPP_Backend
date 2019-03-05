@@ -19,7 +19,7 @@ class database_Handlers:
             self.sapp_cursor.execute('SELECT device_Id FROM Device_Table WHERE device_Id = "' + requestedId + '";')
             result = self.sapp_cursor.fetchall()
             if len(result) > 0:
-                return result[0]
+                return str(result[0])
 
         inserted = False
         while not inserted:
