@@ -20,6 +20,7 @@ class flask_Main:
         @self.flaskApp.route("/device_identifier", methods=["POST"])
         def device_identifier():
             if request.is_json:
+                print("Is json")
                 requestContent = request.get_json()
                 identificationResult = database_Handlers.database_Handlers().identifyDevice(requestContent)
                 return identificationResult
