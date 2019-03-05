@@ -13,7 +13,7 @@ class database_Handlers:
 
     #The device identification database function
     def identifyDevice(self, requestContent):
-        requestedId = requestContent["id"]
+        requestedId = requestContent["device_Id"]
 
         if requestedId != "0":
             self.sapp_cursor.execute('SELECT device_Id FROM Device_Table WHERE device_Id = "' + requestedId + '";')
@@ -27,7 +27,7 @@ class database_Handlers:
             self.sapp_cursor.execute('SELECT device_Id FROM Device_Table WHERE device_Id = "' + new_id + '";')
             result = self.sapp_cursor.fetchall()
             if len(result) == 0:
-                self.sapp_cursor.execute('INSERT INTO Device_Table (device_Id) VALUES (' + new_id + ')')
+                self.sapp_cursor.execute('INSERT INTO Device_Table (device_Id) VALUES ("' + new_id + '");')
                 inserted = True
 
         return new_id

@@ -11,6 +11,11 @@ class flask_Main:
     #The main run function that runs when the program is started
     def run(self):
 
+        # The testshake function that runs when the app asks if the api is online
+        @self.flaskApp.route("/testshake")
+        def testshake():
+            return "Testshake Succesfull"
+
         #The first handshake function to give a device an id
         @self.flaskApp.route("/device_identifier", methods=["POST"])
         def device_identifier():
@@ -20,11 +25,6 @@ class flask_Main:
                 return identificationResult
             else:
                 return "Identification Unsuccessful"
-
-        #The testshake function that runs when the app asks if the api is online
-        @self.flaskApp.route("/testshake")
-        def testshake():
-            return "Testshake Succesfull"
 
         #The login function that checks the send information with the database
         @self.flaskApp.route("/sapp_login", methods=["POST"])
