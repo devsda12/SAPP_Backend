@@ -22,7 +22,7 @@ class flask_Main:
             if request.is_json:
                 requestContent = request.get_json()
                 identificationResult = database_Handlers.database_Handlers().identifyDevice(requestContent)
-                return '{returnedId:"' + identificationResult + '"}'
+                return '{device_Id:"' + identificationResult + '"}'
             else:
                 return "Identification Unsuccessful"
 

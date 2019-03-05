@@ -27,7 +27,8 @@ class database_Handlers:
             self.sapp_cursor.execute('SELECT device_Id FROM Device_Table WHERE device_Id = "' + new_id + '";')
             result = self.sapp_cursor.fetchall()
             if len(result) == 0:
-                #self.sapp_cursor.execute('INSERT INTO Device_Table (device_Id) VALUES ("' + new_id + '");')
+                self.sapp_cursor.execute('INSERT INTO Device_Table (device_Id) VALUES ("' + new_id + '");')
+                self.sapp_database.commit()
                 inserted = True
 
         return new_id
