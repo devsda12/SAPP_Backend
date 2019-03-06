@@ -36,8 +36,8 @@ class database_Handlers:
 
     #The login database function
     def login(self, requestContent):
-        requestedUsername = requestContent["username"]
-        requestedPassword = requestContent["password"]
+        requestedUsername = requestContent["acc_Username"]
+        requestedPassword = requestContent["acc_Password"]
 
         #Using query on the database
         self.sapp_cursor.execute('SELECT acc_Id FROM Acc_Table WHERE acc_Username = "' + requestedUsername + '" AND acc_Password = "' + requestedPassword + '";')
@@ -46,7 +46,7 @@ class database_Handlers:
         if len(result) == 0:
             return False
         else:
-            requestedId = result[0]
+            requestedId = result[0][0]
             return requestedId
 
 

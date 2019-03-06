@@ -8,6 +8,9 @@ class flask_Main:
         #Defining the flask app
         self.flaskApp = Flask(__name__)
 
+        #Defining the dictionary for binding account ID's to device ID's
+        self.idBindDict = {}
+
     #The main run function that runs when the program is started
     def run(self):
 
@@ -32,9 +35,13 @@ class flask_Main:
             if request.is_json:
                 requestContent = request.get_json()
                 loginResult = database_Handlers.database_Handlers().login(requestContent)
-                #Not yet complete!!!!!
                 if not loginResult:
                     return "Login Unsuccessful"
+
+                #If the login is succesful the account ID needs to be bound to the device ID for access
+                requestedDeviceId = requestContent["device_Id"]
+                self.idBindDict[requestedDeviceId] = loginResult
+                return '{acc_Id:"' + loginResult + '"}'
             else:
                 return "Login Unsuccessful"
 
