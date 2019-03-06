@@ -40,7 +40,7 @@ class flask_Main:
 
                 #If the login is succesful the account ID needs to be bound to the device ID for access
                 requestedDeviceId = requestContent["device_Id"]
-                self.idBindDict[requestedDeviceId] = loginResult
+                #self.idBindDict[requestedDeviceId] = loginResult   #ID binding turned off for now until you can actually login
                 return '{acc_Id:"' + loginResult + '"}'
             else:
                 return "Login Unsuccessful"
