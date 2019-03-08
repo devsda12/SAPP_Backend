@@ -50,6 +50,25 @@ class database_Handlers:
             return requestedId
 
 
+    #The create account database function
+    def create_Account(self, requestContent):
+        requestedUsername = requestContent["acc_Username"]
+        requestedPassword = requestContent["acc_Password"]
+
+        #Querying the database to see if username already exists
+        self.sapp_cursor.execute('SELECT acc_Id FROM Acc_Table WHERE acc_Username = "' + requestedUsername + '";')
+        result = self.sapp_cursor.fetchall()
+
+        #If this username exists it is rejected
+        if len(result) > 0:
+            return False
+
+        #If the username does not yet exist it is inserted into the database
+        newAcc_Id = self.id_generator()
+        self.sapp_cursor.execute('INSERT INTO Acc_Table (acc_Id, acc_Username, acc_Password) VALUES ("' + newAcc_Id + '", "' + requestedUsername + '", "' + requestedPassword + '");')
+        self.sapp_database.commit()
+        return newAcc_Id
+
     #NON-database functions
 
     #Function to generate 10 digit ID
