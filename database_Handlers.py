@@ -64,9 +64,16 @@ class database_Handlers:
             return False
 
         #If the username does not yet exist it is inserted into the database
-        newAcc_Id = self.id_generator()
-        self.sapp_cursor.execute('INSERT INTO Acc_Table (acc_Id, acc_Username, acc_Password) VALUES ("' + newAcc_Id + '", "' + requestedUsername + '", "' + requestedPassword + '");')
-        self.sapp_database.commit()
+        inserted = False
+        while not inserted:
+            newAcc_Id = self.id_generator()
+            self.sapp_cursor.execute('SELECT acc_Id FROM Acc_Table WHERE acc_Id = "' + newAcc_Id + '";')
+            result = self.sapp_cursor.fetchall()
+            if len(result) == 0:
+                self.sapp_cursor.execute('INSERT INTO Acc_Table (acc_Id, acc_Username, acc_Password) VALUES ("' + newAcc_Id + '", "' + requestedUsername + '", "' + requestedPassword + '");')
+                self.sapp_database.commit()
+                inserted = True
+
         return newAcc_Id
 
     #NON-database functions
