@@ -53,7 +53,6 @@ class database_Handlers:
     #The create account database function
     def create_Account(self, requestContent):
         requestedUsername = requestContent["acc_Username"]
-        print(requestedUsername)
         requestedPassword = requestContent["acc_Password"]
 
         #Querying the database to see if username already exists
