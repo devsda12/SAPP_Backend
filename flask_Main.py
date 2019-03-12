@@ -57,9 +57,22 @@ class flask_Main:
             else:
                 return "Unsuccessful"
 
-        #Here in the bottom of the run the actual api is run with flaskapp.
-        self.flaskApp.run(host="0.0.0.0"
+        #The function to create a new account in the database
+        @self.flaskApp.route("/sapp_createAccount", methods=["POST"])
+        def sapp_createAccount():
+            if request.is_json:
+                requestContent = request.get_json()
+                createAccountResult = database_Handlers.database_Handlers().create_Account(requestContent)
+                if not createAccountResult:
+                    return "Account Creation Unsuccessful"
 
+                #If the creation is succesful the account id needs to be returned to the user to store it in the account database
+                return '{acc_Id:"' + createAccountResult + '"}'
+            else:
+                return "Account Creation Unsuccessful"
+
+        #Here in the bottom of the run the actual api is run with flaskapp.
+        self.flaskApp.run(host="0.0.0.0")
 
 if __name__ == "__main__":
     flask_Main().run()
