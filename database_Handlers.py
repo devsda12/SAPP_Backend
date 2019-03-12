@@ -80,7 +80,9 @@ class database_Handlers:
     def chats(self, requestContent):
         requestdaccount_id = requestContent["acc_Id"]
 
-        self.sapp_cursor.execute('SELECT acc_Id')
+        self.sapp_cursor.execute('SHOW tables')
+
+
 
     #NON-database functions
 
