@@ -50,12 +50,6 @@ class database_Handlers:
             return requestedId
 
 
-    # Requesting chats database function
-    def chats(self, requestContent):
-        requestedaccount_id = requestContent["acc_id"]
-
-        self.sapp_cursor.execute('SELECT acc_Id')
-
     #The create account database function
     def create_Account(self, requestContent):
         requestedUsername = requestContent["acc_Username"]
@@ -81,6 +75,12 @@ class database_Handlers:
                 inserted = True
 
         return newAcc_Id
+
+    # Requesting chats database function
+    def chats(self, requestContent):
+        requestedaccount_id = requestContent["acc_Id"]
+
+        self.sapp_cursor.execute('SELECT acc_Id')
 
     #NON-database functions
 

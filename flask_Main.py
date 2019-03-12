@@ -45,18 +45,6 @@ class flask_Main:
             else:
                 return "Login Unsuccessful"
 
-        @self.flaskApp.route("/", methodes=["POST"])
-        def sapp_chats():
-            if request.is_json:
-                requestContent = request.get_json()
-                requestedevice_id = requestContent["device_id"]
-                if requestedevice_id in self.idBindDict:
-
-                    chatResult = database_Handlers.database_Handlers().chats(requestContent)
-
-            else:
-                return "Unsuccessful"
-
         #The function to create a new account in the database
         @self.flaskApp.route("/sapp_createAccount", methods=["POST"])
         def sapp_createAccount():
@@ -70,6 +58,17 @@ class flask_Main:
                 return '{acc_Id:"' + createAccountResult + '"}'
             else:
                 return "Account Creation Unsuccessful"
+
+        @self.flaskApp.route("/", methodes=["POST"])
+        def sapp_chats():
+            if request.is_json:
+                requestContent = request.get_json()
+                requestedevice_id = requestContent["device_Id"]
+                if requestedevice_id in self.idBindDict:
+                    chatResult = database_Handlers.database_Handlers().chats(requestContent)
+
+            else:
+                return "Unsuccessful"
 
         #Here in the bottom of the run the actual api is run with flaskapp.
         self.flaskApp.run(host="0.0.0.0")
