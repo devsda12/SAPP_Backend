@@ -93,10 +93,19 @@ class database_Handlers:
             elif item[0][10:20] == requestdaccount_id:
                 foundTables.append([item[0], item[0][0:10]])
 
+        if len(foundTables) == 0:
+            return False
+
+
+
         # Retrieving data from tables
         for table in foundTables:
-            self.sapp_cursor.execute('SELECT sender, message FROM ' + table[0] + ' ORDER BY Date DESC LIMIT 1')
+            self.sapp_cursor.execute('SELECT sender, message FROM ' + table[0] + ' ORDER BY Date DESC LIMIT 1;')
             result = self.sapp_cursor.fetchall()
+            self.sapp_cursor.execute('SELECT acc_Username FROM Acc_Table WHERE acc_Id = "' + table[1] + '";')
+            result_Username = self.sapp_cursor.fetchall()
+            chatsDict[table(0)] = [result, result_Username]
+    
 
     #NON-database functions
 
