@@ -78,11 +78,25 @@ class database_Handlers:
 
     # Requesting chats database function
     def chats(self, requestContent):
+        chatsDict = {}
+        foundTables = []
         requestdaccount_id = requestContent["acc_Id"]
 
+        # Querying the database to see all existing tables
         self.sapp_cursor.execute('SHOW tables')
+        result = self.sapp_cursor.fetchall()
 
+        # determine if acc_Id in table
+        for item in result:
+            if item[0][0:10] == requestdaccount_id:
+                foundTables.append([item[0], item[0][10:20]])
+            elif item[0][10:20] == requestdaccount_id:
+                foundTables.append([item[0], item[0][0:10]])
 
+        # Retrieving data from tables
+        for table in foundTables:
+            self.sapp_cursor.execute('SELECT sender, message FROM ' + table[0] + ' ORDER BY Date DESC LIMIT 1')
+            result = self.sapp_cursor.fetchall()
 
     #NON-database functions
 
