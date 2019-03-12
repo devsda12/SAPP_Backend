@@ -66,7 +66,7 @@ class flask_Main:
                 requestdevice_id = requestContent["device_Id"]
                 requestaccount_id = requestContent["acc_Id"]
                 if requestdevice_id in self.idBindDict:
-                    if requestaccount_id == self.idBindDict[requestedevice_id]:
+                    if requestaccount_id == self.idBindDict[requestdevice_id]:
                         chatResult = database_Handlers.database_Handlers().chats(requestContent)
                     else:
                         return "Unsuccessful"
