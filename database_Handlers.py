@@ -102,7 +102,7 @@ class database_Handlers:
             result = self.sapp_cursor.fetchall()
             self.sapp_cursor.execute('SELECT acc_Username FROM Acc_Table WHERE acc_Id = "' + table[1] + '";')
             result_Username = self.sapp_cursor.fetchall()
-            #Format: dict[tabel_name] = [sender, receiver, partner_username]
+            # Format: dict[tabel_name] = [sender, receiver, partner_username]
             chatsDict[table[0]] = [result[0][0], result[0][1], result_Username[0][0]]
 
         return chatsDict
