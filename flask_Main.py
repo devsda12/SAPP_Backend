@@ -59,14 +59,20 @@ class flask_Main:
             else:
                 return "Account Creation Unsuccessful"
 
-        @self.flaskApp.route("/", methodes=["POST"])
-        def sapp_chats():
+        @self.flaskApp.route("/sapp_getChats", methodes=["POST"])
+        def sapp_getChats():
             if request.is_json:
                 requestContent = request.get_json()
-                requestedevice_id = requestContent["device_Id"]
-                if requestedevice_id in self.idBindDict:
-                    chatResult = database_Handlers.database_Handlers().chats(requestContent)
+                requestdevice_id = requestContent["device_Id"]
+                if requestdevice_id in self.idBindDict:
+                    if requestaccount_id == self.idBindDict[requestedevice_id]:
+                        chatResult = database_Handlers.database_Handlers().chats(requestContent)
+                    else:
+                        return "Unsuccessful"
+                else:
+                    return "Unsuccessful"
 
+                    self.idBindDict[gesprek01] = partner_Id
             else:
                 return "Unsuccessful"
 

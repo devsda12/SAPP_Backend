@@ -78,7 +78,7 @@ class database_Handlers:
 
     # Requesting chats database function
     def chats(self, requestContent):
-        requestedaccount_id = requestContent["acc_Id"]
+        requestdaccount_id = requestContent["acc_Id"]
 
         self.sapp_cursor.execute('SELECT acc_Id')
 
