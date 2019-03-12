@@ -50,6 +50,12 @@ class database_Handlers:
             return requestedId
 
 
+    # Requesting chats database function
+    def chats(self, requestContent):
+        requestedaccount_id = requestContent["acc_id"]
+
+        self.sapp_cursor.execute('SELECT acc_Id')
+
     #NON-database functions
 
     #Function to generate 10 digit ID
