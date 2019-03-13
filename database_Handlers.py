@@ -148,16 +148,17 @@ class database_Handlers:
 
         return chatsDict
 
-
     # Searching for users in the database
-    def findUsers(self, requestContent):
+    def findUser(self, requestContent):
         foundUsers = {}
         request_Username = requestContent[""]
 
         self.sapp_cursor.execute('SELECT acc_Username, acc_Id FROM Acc_Table WHERE acc_Username LIKE "%' + request_Username + '%";')
         result = self.sapp_cursor.fetchall()
+        for item in result:
+            foundUsers[item[0][0]] = [item[0][1]]
 
-
+        return foundUsers
 
     #NON-database functions
 

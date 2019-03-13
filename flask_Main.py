@@ -97,7 +97,22 @@ class flask_Main:
                         if not userResults:
                             return "No users found"
 
-
+                        if len(userResults) >= 2:
+                            returnstring = "["
+                            for item in userResults:
+                                returnstring = returnstring + '{acc_Username:"' + item + '", acc_Id:"' + userResults[item][0] + '"},'
+                            returnstring = returnstring[:-1]
+                            returnstring = returnstring + "]"
+                            return returnstring
+                        else:
+                            for item in userResults:
+                                return '{acc_Username:"' + item + '", acc_Id:"' + userResults[item][0] + '"}'
+                    else:
+                        return "no match found"
+                else:
+                    return "Device not found"
+            else:
+                return "request not Json"
 
 
         #Here in the bottom of the run the actual api is run with flaskapp.
