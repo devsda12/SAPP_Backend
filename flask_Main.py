@@ -88,6 +88,22 @@ class flask_Main:
             else:
                 return "Unsuccessful"
 
+        # Searching for users
+        @self.flaskApp.route("/sapp_findUser", methodes=["POST"])
+        def sapp_findUser():
+            if request.is_json:
+                requestContent = request.get_json()
+                requestdevice_id = requestContent["device_Id"]
+                requestaccount_id = requestContent["acc_Id"]
+                if requestdevice_id in self.idBindDict:
+                    if requestaccount_id == self.idBindDict[requestdevice_id]:
+                        userResults = database_Handlers.database_Handlers().findUser(requestContent)
+                        if not userResults:
+                            return "No users found"
+
+
+
+
         #Here in the bottom of the run the actual api is run with flaskapp.
         self.flaskApp.run(host="0.0.0.0")
 
