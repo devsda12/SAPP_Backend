@@ -76,8 +76,9 @@ class database_Handlers:
 
         return newAcc_Id
 
+
     # Requesting chats database function
-    def chats(self, requestContent):
+    def getChats(self, requestContent):
         chatsDict = {}
         foundTables = []
         requestdaccount_id = requestContent["acc_Id"]

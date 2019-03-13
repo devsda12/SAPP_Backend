@@ -67,7 +67,7 @@ class flask_Main:
                 requestaccount_id = requestContent["acc_Id"]
                 if requestdevice_id in self.idBindDict:
                     if requestaccount_id == self.idBindDict[requestdevice_id]:
-                        chatResult = database_Handlers.database_Handlers().chats(requestContent)
+                        chatResult = database_Handlers.database_Handlers().getChats(requestContent)
                         if not chatResult:
                             return "No chats found"
 
@@ -81,12 +81,10 @@ class flask_Main:
                         else:
                             for item in chatResult:
                                 return '{tablename:"' + item + '", sender:"' + chatResult[item][0] + '", message:"' + chatResult[item][1] + '", partner_Username:"' + chatResult[item][2] + '"}'
-
                     else:
                         return "Unsuccessful"
                 else:
                     return "Unsuccessful"
-
             else:
                 return "Unsuccessful"
 
