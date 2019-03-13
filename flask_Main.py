@@ -67,26 +67,22 @@ class flask_Main:
                 requestaccount_id = requestContent["acc_Id"]
                 if requestdevice_id in self.idBindDict:
                     if requestaccount_id == self.idBindDict[requestdevice_id]:
-                        chatResult = database_Handlers.database_Handlers().getChats(requestContent)
+                        chatResult = database_Handlers.database_Handlers().getChatsV2(requestContent)
                         if not chatResult:
                             return "No chats found"
 
                         if len(chatResult) >= 2:
                             returnstring = "["
                             for item in chatResult:
-                                returnstring = returnstring + '{tablename:"' + item + '", sender:"' + chatResult[item][0] + '", message:"' + chatResult[item][1] + '", partner_Username:"' + chatResult[item][2] + '"},'
+                                returnstring = returnstring + '{table_Name:"' + item + '", last_Message:"' + chatResult[item][0] + '", message_Sender:"' + chatResult[item][1] + '", message_Date:"' + chatResult[item][2] + '", partner_Username:"' + chatResult[item][3] + '"},'
                             returnstring = returnstring[:-1]
                             returnstring = returnstring + "]"
                             return returnstring
                         else:
                             for item in chatResult:
-                                return '{tablename:"' + item + '", sender:"' + chatResult[item][0] + '", message:"' + chatResult[item][1] + '", partner_Username:"' + chatResult[item][2] + '"}'
-                    else:
-                        return "Unsuccessful"
-                else:
-                    return "Unsuccessful"
-            else:
-                return "Unsuccessful"
+                                return '{table_Name:"' + item + '", last_Message:"' + chatResult[item][0] + '", message_Sender:"' + chatResult[item][1] + '", message_Date:"' + chatResult[item][2] + '", partner_Username:"' + chatResult[item][3] + '"}'
+            #Returning string if one of the ifs did not execute
+            return "Unsuccessful"
 
         # Searching for users
         @self.flaskApp.route("/sapp_findUser", methodes=["POST"])
