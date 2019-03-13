@@ -77,11 +77,51 @@ class database_Handlers:
         return newAcc_Id
 
 
+    #Requesting chats database function V2
+    def getChatsV2(self, requestContent):
+        chatsDict = {}
+        requestedAccId = requestContent["acc_Id"]
+
+        #Getting all conv_id's from the conv_Table
+        self.sapp_cursor.execute('SELECT conv_Id from Conv_Table;')
+        result = self.sapp_cursor.fetchall()
+
+        #Determine if requested acc_Id in one of the id's
+        for item in result:
+            if item[0][0:10] == requestedAccId:
+                #Getting details from the conv_table
+                self.sapp_cursor.execute('SELECT conv_LastMessage, conv_LastMessageSender, conv_LastMessageDate FROM Conv_Table WHERE conv_Id = "' + item[0] + '";')
+                detailsResult = self.sapp_cursor.fetchall()
+
+                #Getting details of the partner username
+                self.sapp_cursor.execute('SELECT acc_Username FROM Acc_Table WHERE acc_Id = "' + item[0][10:20] + '";')
+                partnerResult = self.sapp_cursor.fetchall()
+
+                #Writing all the information to the dictionary in format dic[tablename] = [lastmessage, lastmessageSender, lastMessageDate, partnername]
+                chatsDict[item[0]] = [detailsResult[0][0], detailsResult[0][1], detailsResult[0][2], partnerResult[0][0]]
+            elif item[0][10:20] == requestedAccId:
+                # Getting details from the conv_table
+                self.sapp_cursor.execute('SELECT conv_LastMessage, conv_LastMessageSender, conv_LastMessageDate FROM Conv_Table WHERE conv_Id = "' + item[0] + '";')
+                detailsResult = self.sapp_cursor.fetchall()
+
+                # Getting details of the partner username
+                self.sapp_cursor.execute('SELECT acc_Username FROM Acc_Table WHERE acc_Id = "' + item[0][0:10] + '";')
+                partnerResult = self.sapp_cursor.fetchall()
+
+                # Writing all the information to the dictionary in format dic[tablename] = [lastmessage, lastmessageSender, lastMessageDate, partnername]
+                chatsDict[item[0]] = [detailsResult[0][0], detailsResult[0][1], detailsResult[0][2], partnerResult[0][0]]
+
+        #Checking whether the dict is empty
+        if len(chatsDict) == 0:
+            return False
+        else:
+            return chatsDict
+
     # Requesting chats database function
     def getChats(self, requestContent):
         chatsDict = {}
         foundTables = []
-        requestdaccount_id = requestContent["acc_Id"]
+        requestedAccId = requestContent["acc_Id"]
 
         # Querying the database to see all existing tables
         self.sapp_cursor.execute('SHOW tables')
@@ -89,9 +129,9 @@ class database_Handlers:
 
         # determine if acc_Id in table
         for item in result:
-            if item[0][0:10] == requestdaccount_id:
+            if item[0][0:10] == requestedAccId:
                 foundTables.append([item[0], item[0][10:20]])
-            elif item[0][10:20] == requestdaccount_id:
+            elif item[0][10:20] == requestedAccId:
                 foundTables.append([item[0], item[0][0:10]])
 
         if len(foundTables) == 0:
