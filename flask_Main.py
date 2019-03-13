@@ -71,7 +71,8 @@ class flask_Main:
                         if not chatResult:
                             return "No chats found"
 
-                        if len(chatResult) >= 2:
+                        #Deactivated for testing purposes
+                        if len(chatResult) > 0:
                             returnstring = "["
                             for item in chatResult:
                                 returnstring = returnstring + '{table_Name:"' + item + '", last_Message:"' + chatResult[item][0] + '", message_Sender:"' + chatResult[item][1] + '", message_Date:"' + chatResult[item][2] + '", partner_Username:"' + chatResult[item][3] + '"},'
