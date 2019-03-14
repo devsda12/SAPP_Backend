@@ -77,6 +77,7 @@ class flask_Main:
                             return "No chats found"
 
                         #Deactivated for testing purposes
+                        print(chatResult)
                         if len(chatResult) > 0:
                             returnstring = "["
                             for item in chatResult:
