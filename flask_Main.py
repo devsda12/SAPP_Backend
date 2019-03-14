@@ -42,7 +42,7 @@ class flask_Main:
 
                 #If the login is succesful the account ID needs to be bound to the device ID for access
                 requestedDeviceId = requestContent["device_Id"]
-                #self.idBindDict[requestedDeviceId] = loginResult   #ID binding turned off for now until you can actually login
+                self.idBindDict[requestedDeviceId] = loginResult   #ID binding turned off for now until you can actually login
                 return '{acc_Id:"' + loginResult + '"}'
             else:
                 return "Login Unsuccessful"
@@ -68,8 +68,8 @@ class flask_Main:
         def sapp_getChats():
             if request.is_json:
                 requestContent = request.get_json()
-                requestdevice_id = requestContent["device_Id"]
-                requestaccount_id = requestContent["acc_Id"]
+                requestdevice_id = requestContent[0]["device_Id"]
+                requestaccount_id = requestContent[0]["acc_Id"]
                 if requestdevice_id in self.idBindDict:
                     if requestaccount_id == self.idBindDict[requestdevice_id]:
                         chatResult = database_Handlers.database_Handlers().getChatsV2(requestContent)

@@ -80,7 +80,7 @@ class database_Handlers:
     #Requesting chats database function V2
     def getChatsV2(self, requestContent):
         chatsDict = {}
-        requestedAccId = requestContent["acc_Id"]
+        requestedAccId = requestContent[0]["acc_Id"]
 
         #Getting all conv_id's from the conv_Table
         self.sapp_cursor.execute('SELECT conv_Id from Conv_Table;')
