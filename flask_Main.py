@@ -121,6 +121,22 @@ class flask_Main:
             else:
                 return "request not Json"
 
+        @self.flaskApp.route("/sapp_createTable", methodes=["POST"])
+        def sapp_createTable():
+            if request.is_json:
+                requestContent = request.get_json()
+                requestdevice_id = requestContent["device_Id"]
+                requestaccount_id = requestContent["acc_Id"]
+                if requestdevice_id in self.idBindDict:
+                    if requestaccount_id == self.idBindDict[requestdevice_id]:
+
+                        tableResults = database_Handlers.database_Handlers().createTable(requestContent)
+
+                        if not tableResults:
+                            return "No results"
+
+                        return tableResults
+
 
         #Here in the bottom of the run the actual api is run with flaskapp.
         self.flaskApp.run(host="0.0.0.0")

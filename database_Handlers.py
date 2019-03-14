@@ -162,6 +162,24 @@ class database_Handlers:
 
         return foundUsers
 
+    # creating new conversation table
+    def createTable(self, requestContent):
+        requestpartner_id = requestContent["partner_Id"]
+        requestaccount_id = requestContent["acc_Id"]
+
+        # creating name for the conversation (partner id still has to be defined)
+        newTableName = requestaccount_id + requestpartner_id
+
+        self.sapp_cursor.execute('SHOW TABLES')
+        result = self.sapp_cursor.fetchall()
+
+        if any(newTableName in item for item in result):
+            return False
+        else:
+            self.sapp_cursor.execute('CREATE TABLE' + newTableName + '(Sender Text, Receiver Text, Message Text, DateTime Datetime);')
+            self.sapp_cursor.execute('INSER INTO Conv_Table (conv_Id, conv_LastMessage, conv_LastMessageSender, conv_LastMessageDate) VALUES ("' + newTableName + '", Null, Null, Null);')
+            return True
+
     #NON-database functions
 
     #Function to generate 10 digit ID
