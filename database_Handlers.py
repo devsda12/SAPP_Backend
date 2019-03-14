@@ -98,7 +98,7 @@ class database_Handlers:
                 partnerResult = self.sapp_cursor.fetchall()
 
                 #Writing all the information to the dictionary in format dic[tablename] = [lastmessage, lastmessageSender, lastMessageDate, partnername]
-                chatsDict[item[0]] = [detailsResult[0][0], detailsResult[0][1], detailsResult[0][2], partnerResult[0][0]]
+                chatsDict[item[0]] = [item[0][10:20], partnerResult[0][0], detailsResult[0][0], detailsResult[0][1], detailsResult[0][2]]
             elif item[0][10:20] == requestedAccId:
                 # Getting details from the conv_table
                 self.sapp_cursor.execute('SELECT conv_LastMessage, conv_LastMessageSender, conv_LastMessageDate FROM Conv_Table WHERE conv_Id = "' + item[0] + '";')
@@ -109,7 +109,7 @@ class database_Handlers:
                 partnerResult = self.sapp_cursor.fetchall()
 
                 # Writing all the information to the dictionary in format dic[tablename] = [lastmessage, lastmessageSender, lastMessageDate, partnername]
-                chatsDict[item[0]] = [detailsResult[0][0], detailsResult[0][1], detailsResult[0][2], partnerResult[0][0]]
+                chatsDict[item[0]] = [item[0][0:10], partnerResult[0][0], detailsResult[0][0], detailsResult[0][1], detailsResult[0][2]]
 
         #Checking whether the dict is empty
         if len(chatsDict) == 0:
