@@ -92,7 +92,7 @@ class flask_Main:
 
 
         # Searching for users
-        @self.flaskApp.route("/sapp_findUser", methodes=["POST"])
+        @self.flaskApp.route("/sapp_findUser", methods=["POST"])
         def sapp_findUser():
             if request.is_json:
                 requestContent = request.get_json()
