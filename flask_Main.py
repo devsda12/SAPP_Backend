@@ -19,6 +19,7 @@ class flask_Main:
         def testshake():
             return "Testshake Succesfull"
 
+
         #The first handshake function to give a device an id
         @self.flaskApp.route("/device_identifier", methods=["POST"])
         def device_identifier():
@@ -28,6 +29,7 @@ class flask_Main:
                 return '{device_Id:"' + identificationResult + '"}'
             else:
                 return "Identification Unsuccessful"
+
 
         #The login function that checks the send information with the database
         @self.flaskApp.route("/sapp_login", methods=["POST"])
@@ -45,6 +47,7 @@ class flask_Main:
             else:
                 return "Login Unsuccessful"
 
+
         #The function to create a new account in the database
         @self.flaskApp.route("/sapp_createAccount", methods=["POST"])
         def sapp_createAccount():
@@ -59,6 +62,8 @@ class flask_Main:
             else:
                 return "Account Creation Unsuccessful"
 
+
+        #Returning the chats for the conv_select activity
         @self.flaskApp.route("/sapp_getChats", methodes=["POST"])
         def sapp_getChats():
             if request.is_json:
@@ -84,6 +89,7 @@ class flask_Main:
                                 return '{table_Name:"' + item + '", last_Message:"' + chatResult[item][0] + '", message_Sender:"' + chatResult[item][1] + '", message_Date:"' + chatResult[item][2] + '", partner_Username:"' + chatResult[item][3] + '"}'
             #Returning string if one of the ifs did not execute
             return "Unsuccessful"
+
 
         # Searching for users
         @self.flaskApp.route("/sapp_findUser", methodes=["POST"])
