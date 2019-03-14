@@ -64,7 +64,7 @@ class flask_Main:
 
 
         #Returning the chats for the conv_select activity
-        @self.flaskApp.route("/sapp_getChats", methodes=["POST"])
+        @self.flaskApp.route("/sapp_getChats", methods=["POST"])
         def sapp_getChats():
             if request.is_json:
                 requestContent = request.get_json()
