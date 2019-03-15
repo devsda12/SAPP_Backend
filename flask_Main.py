@@ -76,18 +76,13 @@ class flask_Main:
                         if not chatResult:
                             return "No chats found"
 
-                        #Deactivated for testing purposes
-                        print(chatResult)
-                        if len(chatResult) > 0:
-                            returnstring = "["
-                            for item in chatResult:
-                                returnstring = returnstring + '{table_Name:"' + item + '", partner_Id:"' + chatResult[item][0] + '", partner_Username:"' + chatResult[item][1] + '", last_Message:"' + chatResult[item][2] + '", message_Sender:"' + chatResult[item][3] + '", message_Date:"' + str(chatResult[item][4]) + '"},'
-                            returnstring = returnstring[:-1]
-                            returnstring = returnstring + "]"
-                            return returnstring
-                        else:
-                            for item in chatResult:
-                                return '{table_Name:"' + item + '", last_Message:"' + chatResult[item][0] + '", message_Sender:"' + chatResult[item][1] + '", message_Date:"' + chatResult[item][2] + '", partner_Username:"' + chatResult[item][3] + '"}'
+                        returnstring = "["
+                        for item in chatResult:
+                            returnstring = returnstring + '{table_Name:"' + item + '", partner_Id:"' + chatResult[item][0] + '", partner_Username:"' + chatResult[item][1] + '", last_Message:"' + chatResult[item][2] + '", message_Sender:"' + chatResult[item][3] + '", message_Date:"' + str(chatResult[item][4]) + '"},'
+                        returnstring = returnstring[:-1]
+                        returnstring = returnstring + "]"
+                        return returnstring
+
             #Returning string if one of the ifs did not execute
             return "Unsuccessful"
 
@@ -115,12 +110,9 @@ class flask_Main:
                         else:
                             for item in userResults:
                                 return '{acc_Username:"' + item + '", acc_Id:"' + userResults[item][0] + '"}'
-                    else:
-                        return "no match found"
-                else:
-                    return "Device not found"
-            else:
-                return "request not Json"
+
+            # Returning string if one of the ifs did not execute
+            return "Unsuccessful"
 
 
         @self.flaskApp.route("/sapp_createTable", methods=["POST"])
