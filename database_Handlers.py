@@ -86,7 +86,7 @@ class database_Handlers:
         self.sapp_cursor.execute('SELECT conv_Id from Conv_Table;')
         result = self.sapp_cursor.fetchall()
 
-        #Determine if requested acc_Id in one of the id's
+        #Determine if requested acc_Id in one of the id's (OLD VERSION)
         for item in result:
             if item[0][0:10] == requestedAccId:
                 #Getting details from the conv_table
@@ -112,6 +112,49 @@ class database_Handlers:
                 chatsDict[item[0]] = [item[0][0:10], partnerResult[0][0], detailsResult[0][0], detailsResult[0][1], detailsResult[0][2]]
 
         #Checking whether the dict is empty
+        if len(chatsDict) == 0:
+            return False
+        else:
+            return chatsDict
+
+
+    # Requesting chats database function V3
+    def getChatsV3(self, requestContent):
+        chatsDict = {}
+        requestedAccId = requestContent[0]["acc_Id"]
+
+        # Getting all conv_id's from the conv_Table
+        self.sapp_cursor.execute('SELECT conv_Id from Conv_Table;')
+        result = self.sapp_cursor.fetchall()
+
+        # Determine if requested acc_Id in one of the id's (NEW VERSION)
+        for item in result:
+            tempSplitList = [item[0][i:i + 10] for i in range(0, len(item[0]), 10)]
+            for index, tenPart in enumerate(tempSplitList):
+                # Als een van de gedeelten van 10 chars overeenkomt met het gegeven acc_Id
+                if tenPart == requestedAccId:
+                    # Als de lengte van de totale lijst minder of gelijk is aan 2. Oftewel het is een gesprek tussen 2 personen
+                    if len(tempSplitList) <= 2:
+                        # Als het de eerste index is van de tempSplitList dan is de tweede de partner en andersom
+                        if index == 0:
+                            tempPartnerId = tempSplitList[1]
+                        else:
+                            tempPartnerId = tempSplitList[0]
+
+                        #Nu wordt de partner informatie opgehaald van de db
+                        self.sapp_cursor.execute('SELECT acc_Username FROM Acc_Table WHERE acc_Id = "' + tempPartnerId + '";')
+                        partnerResult = self.sapp_cursor.fetchall()
+                    else:
+                        doSomethingToFetchGroupConversationInfo = ""
+
+                    #Nu wordt de overige informatie van het gesprek uit de db gehaald
+                    self.sapp_cursor.execute('SELECT conv_LastMessage, conv_LastMessageSender, conv_LastMessageDate FROM Conv_Table WHERE conv_Id = "' + item[0] + '";')
+                    detailsResult = self.sapp_cursor.fetchall()
+
+                    # Writing all the information to the dictionary in format dic[tablename] = [partner_Id, partner_Username, lastMessage, messageSender, messageDate]
+                    chatsDict[item[0]] = [tempPartnerId, partnerResult[0][0], detailsResult[0][0], detailsResult[0][1], detailsResult[0][2]]
+
+        # Checking whether the dict is empty
         if len(chatsDict) == 0:
             return False
         else:
