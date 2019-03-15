@@ -122,6 +122,7 @@ class flask_Main:
             else:
                 return "request not Json"
 
+
         @self.flaskApp.route("/sapp_createTable", methods=["POST"])
         def sapp_createTable():
             if request.is_json:

@@ -161,38 +161,6 @@ class database_Handlers:
             return chatsDict
 
 
-    # Requesting chats database function
-    def getChats(self, requestContent):
-        chatsDict = {}
-        foundTables = []
-        requestedAccId = requestContent["acc_Id"]
-
-        # Querying the database to see all existing tables
-        self.sapp_cursor.execute('SHOW tables')
-        result = self.sapp_cursor.fetchall()
-
-        # determine if acc_Id in table
-        for item in result:
-            if item[0][0:10] == requestedAccId:
-                foundTables.append([item[0], item[0][10:20]])
-            elif item[0][10:20] == requestedAccId:
-                foundTables.append([item[0], item[0][0:10]])
-
-        if len(foundTables) == 0:
-            return False
-
-        # Retrieving data from tables
-        for table in foundTables:
-            self.sapp_cursor.execute('SELECT sender, message FROM ' + table[0] + ' ORDER BY Date DESC LIMIT 1;')
-            result = self.sapp_cursor.fetchall()
-            self.sapp_cursor.execute('SELECT acc_Username FROM Acc_Table WHERE acc_Id = "' + table[1] + '";')
-            result_Username = self.sapp_cursor.fetchall()
-            # Format: dict[tabel_name] = [sender, receiver, partner_username]
-            chatsDict[table[0]] = [result[0][0], result[0][1], result_Username[0][0]]
-
-        return chatsDict
-
-
     # Searching for users in the database
     def findUser(self, requestContent):
         foundUsers = {}
