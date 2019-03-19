@@ -100,16 +100,12 @@ class flask_Main:
                         if not userResults:
                             return "No users found"
 
-                        if len(userResults) >= 2:
-                            returnstring = "["
-                            for item in userResults:
-                                returnstring = returnstring + '{acc_Username:"' + item + '", acc_Id:"' + userResults[item][0] + '"},'
-                            returnstring = returnstring[:-1]
-                            returnstring = returnstring + "]"
-                            return returnstring
-                        else:
-                            for item in userResults:
-                                return '{acc_Username:"' + item + '", acc_Id:"' + userResults[item][0] + '"}'
+                        returnstring = "["
+                        for item in userResults:
+                            returnstring = returnstring + '{acc_Username:"' + item + '", acc_Id:"' + userResults[item][0] + '"},'
+                        returnstring = returnstring[:-1]
+                        returnstring = returnstring + "]"
+                        return returnstring
 
             # Returning string if one of the ifs did not execute
             return "Unsuccessful"
