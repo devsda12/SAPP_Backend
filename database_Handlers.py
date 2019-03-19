@@ -164,7 +164,7 @@ class database_Handlers:
     # Searching for users in the database
     def findUser(self, requestContent):
         foundUsers = {}
-        request_Username = requestContent["acc_Username"]
+        request_Username = requestContent[0]["acc_Username"]
 
         self.sapp_cursor.execute('SELECT acc_Username, acc_Id FROM Acc_Table WHERE acc_Username LIKE "%' + request_Username + '%";')
         result = self.sapp_cursor.fetchall()
