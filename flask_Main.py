@@ -102,7 +102,7 @@ class flask_Main:
 
                         returnstring = "["
                         for item in userResults:
-                            returnstring = returnstring + '{acc_Username:"' + item + '", acc_Id:"' + userResults[item][0] + '"},'
+                            returnstring = returnstring + '{acc_Username:"' + item + '", acc_Id:"' + userResults[item] + '"},'
                         returnstring = returnstring[:-1]
                         returnstring = returnstring + "]"
                         return returnstring

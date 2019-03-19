@@ -169,9 +169,14 @@ class database_Handlers:
         self.sapp_cursor.execute('SELECT acc_Username, acc_Id FROM Acc_Table WHERE acc_Username LIKE "%' + request_Username + '%";')
         result = self.sapp_cursor.fetchall()
         for item in result:
-            foundUsers[item[0]] = [item[1]]
+            foundUsers[item[0]] = item[1]
 
-        return foundUsers
+        # Checking whether the dict is empty
+        if len(foundUsers) == 0:
+            return False
+        else:
+            return foundUsers
+
 
     # creating new conversation table
     def createTable(self, requestContent):
