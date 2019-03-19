@@ -114,7 +114,7 @@ class flask_Main:
             # Returning string if one of the ifs did not execute
             return "Unsuccessful"
 
-
+        # Create new table
         @self.flaskApp.route("/sapp_createTable", methods=["POST"])
         def sapp_createTable():
             if request.is_json:
@@ -130,6 +130,20 @@ class flask_Main:
                             return "No results"
 
                         return tableResults
+
+        # Removes device and account id's from dictionairy
+        @self.flaskApp.route("/sapp_logout", methods=["POST"])
+        def sapp_logout():
+            if request.is_json:
+                requestContent = request.get_json()
+                requestdevice_id = requestContent["device_Id"]
+                requestaccount_id = requestContent["acc_Id"]
+                if requestdevice_id in self.idBindDict:
+                    if requestaccount_id == self.idBindDict[requestdevice_id]:
+                        del self.idBindDict[requestdevice_id]
+                        return True
+            else:
+                return "Unsuccessful"
 
 
         #Here in the bottom of the run the actual api is run with flaskapp.
