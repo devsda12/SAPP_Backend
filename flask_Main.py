@@ -139,6 +139,7 @@ class flask_Main:
                 requestContent = request.get_json()
                 requestdevice_id = requestContent["device_Id"]
                 requestaccount_id = requestContent["acc_Id"]
+                print(requestaccount_id)
                 if requestdevice_id in self.idBindDict:
                     print(2)
                     if requestaccount_id == self.idBindDict[requestdevice_id]:
