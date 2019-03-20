@@ -196,7 +196,7 @@ class database_Handlers:
         if any(newTableName in item for item in result):
             return False
         else:
-            self.sapp_cursor.execute('CREATE TABLE' + newTableName + '(Sender Text, Receiver Text, Message Text, DateTime Datetime);')
+            self.sapp_cursor.execute('CREATE TABLE ' + newTableName + ' (Sender Text, Receiver Text, Message Text, DateTime Datetime);')
             self.sapp_cursor.execute('INSERT INTO Conv_Table (conv_Id, conv_LastMessage, conv_LastMessageSender, conv_LastMessageDate) VALUES ("' + newTableName + '", Null, Null, Null);')
             self.sapp_database.commit()
             return True
