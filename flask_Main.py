@@ -141,9 +141,9 @@ class flask_Main:
                 if requestdevice_id in self.idBindDict:
                     if requestaccount_id == self.idBindDict[requestdevice_id]:
                         del self.idBindDict[requestdevice_id]
-                        return True
-            else:
-                return "Unsuccessful"
+                        return '{deleteResult:"true"}'
+
+            return "Unsuccessful"
 
 
         #Here in the bottom of the run the actual api is run with flaskapp.
