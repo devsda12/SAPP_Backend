@@ -135,15 +135,11 @@ class flask_Main:
         @self.flaskApp.route("/sapp_logout", methods=["POST"])
         def sapp_logout():
             if request.is_json:
-                print(1)
                 requestContent = request.get_json()
                 requestdevice_id = requestContent["device_Id"]
                 requestaccount_id = requestContent["acc_Id"]
-                print(requestaccount_id)
                 if requestdevice_id in self.idBindDict:
-                    print(2)
                     if requestaccount_id == self.idBindDict[requestdevice_id]:
-                        print(3)
                         del self.idBindDict[requestdevice_id]
                         return '{deleteResult:"true"}'
 
