@@ -110,6 +110,7 @@ class flask_Main:
             # Returning string if one of the ifs did not execute
             return "Unsuccessful"
 
+
         # Create new table
         @self.flaskApp.route("/sapp_createTable", methods=["POST"])
         def sapp_createTable():
@@ -123,9 +124,12 @@ class flask_Main:
                         tableResults = database_Handlers.database_Handlers().createTable(requestContent)
 
                         if not tableResults:
-                            return "No results"
+                            return "Not Inserted"
 
-                        return tableResults
+                        return '{insertResult:"true"}'
+
+            return "Not Inserted"
+
 
         # Removes device and account id's from dictionairy
         @self.flaskApp.route("/sapp_logout", methods=["POST"])
