@@ -183,6 +183,10 @@ class database_Handlers:
         requestpartner_id = requestContent["partner_Id"]
         requestaccount_id = requestContent["acc_Id"]
 
+        #Catching the creation if the two requested id's are the same
+        if requestaccount_id == requestpartner_id:
+            return False
+
         # creating name for the conversation (partner id still has to be defined)
         newTableName = requestaccount_id + requestpartner_id
 
