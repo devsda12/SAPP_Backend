@@ -201,6 +201,23 @@ class database_Handlers:
             self.sapp_database.commit()
             return True
 
+    # Retrieve messages of a chat
+    def getChat(self, requestContent):
+        chatDict = {}
+        requestconv_id = requestContent["conv_Id"]
+
+        self.sapp_cursor.execute('SELECT * from ' + requestconv_id + ';')
+        result = self.sapp_cursor.fetchall()
+
+        for item in result:
+            chatDict[item[0]] = [item[0][0], item[0][1], item[0][2], item[0][3]]
+
+        # Checking whether the dict is empty
+        if len(chatDict) == 0:
+            return False
+        else:
+            return chatDict
+
     #NON-database functions
 
     #Function to generate 10 digit ID

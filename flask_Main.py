@@ -145,6 +145,29 @@ class flask_Main:
 
             return "Unsuccessful"
 
+        # Retrieve messages of a chat
+        @self.flaskApp.route("/sapp_getChat", methods=["POST"])
+        def sapp_getChat():
+            if request.is_json:
+                requestContent = request.get_json()
+                requestdevice_id = requestContent["device_Id"]
+                requestaccount_id = requestContent["acc_Id"]
+                if requestdevice_id in self.idBindDict:
+                    if requestaccount_id == self.idBindDict[requestdevice_id]:
+                        chatResult = database_Handlers.database_Handlers().getChat(requestContent)
+
+                        if not chatResult:
+                            return "No users found"
+
+                        returnstring = "["
+                        for item in chatResult:
+                            returnstring = returnstring + '{Sender:"' + item + '", Reciever:"' + str(
+                                chatResult[item][0]) + '", Message:"' + str(
+                                chatResult[item][1]) + '", DateTime:"' + str(chatResult[item][3],)
+                        returnstring = returnstring[:-1]
+                        returnstring = returnstring + "]"
+                        return returnstring
+
 
         #Here in the bottom of the run the actual api is run with flaskapp.
         self.flaskApp.run(host="0.0.0.0")
