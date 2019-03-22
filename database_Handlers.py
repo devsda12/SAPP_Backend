@@ -202,7 +202,7 @@ class database_Handlers:
             return True
 
     # Retrieve messages of a chat
-    def getChat(self, requestContent):
+    def getCompleteChat(self, requestContent):
         chatDict = {}
         requestconv_id = requestContent["conv_Id"]
 
@@ -210,13 +210,16 @@ class database_Handlers:
         result = self.sapp_cursor.fetchall()
 
         for item in result:
-            chatDict[item[0]] = [item[0][0], item[0][1], item[0][2], item[0][3]]
+            chatDict[item[0]] = [item[1], item[2], item[3]]
 
         # Checking whether the dict is empty
         if len(chatDict) == 0:
             return False
         else:
             return chatDict
+
+    #Creer hier nog een functie die alle berichten van een bepaalde tabel ophaald die geplaatst zijn na een bepaalde datetime.
+
 
     #NON-database functions
 
