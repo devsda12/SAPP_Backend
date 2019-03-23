@@ -169,13 +169,65 @@ class flask_Main:
                         returnstring = returnstring + "]"
                         return returnstring
 
+            else:
+                return "unsuccessful"
 
-        #Retrieve messages after a given datetime of a chat
+        # Retrieve messages after a given datetime of a chat
         @self.flaskApp.route("/sapp_getPartialChat", methods=["POST"])
         def sapp_getPartialChat():
-            #GOOD LUCK AND HAVE FUN, YES FUN :D
-            dummy = ""
+            if request.is_json:
+                requestContent = request.get_json()
+                requestdevice_id = requestContent["device_Id"]
+                requestaccount_id = requestContent["acc_Id"]
+                if requestdevice_id in self.idBindDict:
+                    if requestaccount_id == self.idBindDict[requestdevice_id]:
+                        chatResult = database_Handlers.database_Handlers().getPartialChat(requestContent)
 
+                        if not chatResult:
+                            return "Error retrieving chat"
+
+                        returnstring = "["
+                        for item in chatResult:
+                            returnstring = returnstring + '{Sender:"' + item + '", Receiver:"' + str(
+                                chatResult[item][0]) + '", Message:"' + str(
+                                chatResult[item][1]) + '", DateTime:"' + str(chatResult[item][2] + "},")
+                        returnstring = returnstring[:-1]
+                        returnstring = returnstring + "]"
+                        return returnstring
+
+            else:
+                return "unsuccessful"
+
+        # cleat a single chat of all messages
+        @self.flaskApp.route("/sapp_clearChat", methods=["POST"])
+        def sapp_clearChat():
+            if request.is_json:
+                requestContent = request.get_json()
+                requestdevice_id = requestContent["device_Id"]
+                requestaccount_id = requestContent["acc_Id"]
+                if requestdevice_id in self.idBindDict:
+                    if requestaccount_id == self.idBindDict[requestdevice_id]:
+                        result = database_Handlers.database_Handlers().clearChat(requestContent)
+
+                        return result
+
+            else:
+                return "unsuccessful"
+
+        @self.flaskApp.route("/sapp_addMessage", methods=["POST"])
+        def sapp_addMessage():
+            if request.is_json:
+                requestContent = request.get_json()
+                requestdevice_id = requestContent["device_Id"]
+                requestaccount_id = requestContent["acc_Id"]
+                if requestdevice_id in self.idBindDict:
+                    if requestaccount_id == self.idBindDict[requestdevice_id]:
+                        result = database_Handlers.database_Handlers().addMessage(requestContent)
+
+                        return result
+
+            else:
+                return "unsuccessful"
 
         #Here in the bottom of the run the actual api is run with flaskapp.
         self.flaskApp.run(host="0.0.0.0")

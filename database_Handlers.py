@@ -206,7 +206,7 @@ class database_Handlers:
         chatDict = {}
         requestconv_id = requestContent["conv_Id"]
 
-        self.sapp_cursor.execute('SELECT * from ' + requestconv_id + ';')
+        self.sapp_cursor.execute('SELECT * FROM ' + requestconv_id + ';')
         result = self.sapp_cursor.fetchall()
 
         for item in result:
@@ -218,10 +218,56 @@ class database_Handlers:
         else:
             return chatDict
 
-    #Creer hier nog een functie die alle berichten van een bepaalde tabel ophaald die geplaatst zijn na een bepaalde datetime.
+    # Creer hier nog een functie die alle berichten van een bepaalde tabel ophaald die geplaatst zijn na een bepaalde datetime.
+    def getPartialChat(self, requestContent):
+        requestDateTime = requestContent["DateTime"]
+        requestconv_id = requestContent["conv_Id"]
+        chatDict = {}
 
+        self.sapp_cursor.execute('SELECT * FROM ' + requestconv_id + ' WHERE DateTime >= "' + requestDateTime + '";')
+        result = self.sapp_cursor.fetchall()
 
-    #NON-database functions
+        for item in result:
+            chatDict[item[0]] = [item[1], item[2], item[3]]
+
+        # Checking whether the dict is empty
+        if len(chatDict) == 0:
+            return False
+        else:
+            return chatDict
+
+    # Clears a single chat of all messages
+    def clearChat(self, requestContent):
+        requestconv_id = requestContent["conv_Id"]
+
+        self.sapp_cursor.execute('DELETE * FROM ' + requestconv_id + ';')
+
+        return True
+
+    # Add a message to conversation table
+    def addMessage(self, requestContent):
+        requestconv_id = requestContent["conv_Id"]
+        requestSender = requestContent["Sender"]
+        requestReceiver = requestContent["Receiver"]
+        requestMessage = requestContent["Message"]
+
+        self.sapp_cursor.execute('SELECT CURRENT_TIMESTAMP();')
+        result = self.sapp_cursor.fetchone()
+
+        self.sapp_cursor.execute('INSERT INTO ' + requestconv_id + ' (Sender, Receiver, Message, DateTime) '
+                                                                   'VALUES ("' + requestSender + '", '
+                                                                            '"' + requestReceiver + '", '
+                                                                            '"' + requestMessage + '", '
+                                                                            '"' + result[0] + '";')
+        self.sapp_cursor.execute('UPDATE Conv_Table'
+                                 'SET conv_LastMessageSender = "' + requestSender + '", '
+                                    'conv_LastMessage =  "' + requestMessage + '", '
+                                    'conv_LastMessageDate = "' + result[0] + '" '
+                                    'WHERE conv_Id = "' + requestconv_id + '";')
+
+        return True
+
+    # NON-database functions
 
     #Function to generate 10 digit ID
     def id_generator(self, size=10, chars=string.ascii_letters + string.digits):
