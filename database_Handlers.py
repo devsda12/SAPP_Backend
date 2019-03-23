@@ -205,7 +205,7 @@ class database_Handlers:
     # Retrieve messages of a chat
     def getCompleteChat(self, requestContent):
         chatDict = {}
-        requestconv_id = requestContent["conv_Id"]
+        requestconv_id = requestContent[0]["conv_Id"]
 
         self.sapp_cursor.execute('SELECT * FROM ' + requestconv_id + ';')
         result = self.sapp_cursor.fetchall()
@@ -222,8 +222,8 @@ class database_Handlers:
 
     # Creer hier nog een functie die alle berichten van een bepaalde tabel ophaald die geplaatst zijn na een bepaalde datetime.
     def getPartialChat(self, requestContent):
-        requestDateTime = requestContent["lastMessageDate"]
-        requestconv_id = requestContent["conv_Id"]
+        requestDateTime = requestContent[0]["lastMessageDate"]
+        requestconv_id = requestContent[0]["conv_Id"]
         chatDict = {}
 
         self.sapp_cursor.execute('SELECT * FROM ' + requestconv_id + ' WHERE DateTime > "' + requestDateTime + '";')
