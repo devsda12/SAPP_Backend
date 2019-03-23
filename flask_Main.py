@@ -184,7 +184,7 @@ class flask_Main:
                 if requestdevice_id in self.idBindDict:
                     if requestaccount_id == self.idBindDict[requestdevice_id]:
                         chatResult = database_Handlers.database_Handlers().getPartialChat(requestContent)
-
+                        print(chatResult)
                         if not chatResult:
                             return "Error retrieving chat"
 

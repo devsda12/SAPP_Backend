@@ -230,6 +230,8 @@ class database_Handlers:
 
         self.sapp_cursor.execute('SELECT * FROM ' + requestconv_id + ' WHERE DateTime > "' + requestDateTime + '";')
         result = self.sapp_cursor.fetchall()
+        print(len(result))
+        print(result)
 
         for item in result:
             chatDict[item[0]] = [item[1], item[2], item[3]]
