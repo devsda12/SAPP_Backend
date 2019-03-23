@@ -156,7 +156,7 @@ class flask_Main:
                 if requestdevice_id in self.idBindDict:
                     if requestaccount_id == self.idBindDict[requestdevice_id]:
                         chatResult = database_Handlers.database_Handlers().getCompleteChat(requestContent)
-                        print(chatResult)
+
                         if not chatResult:
                             return "Error retrieving chat"
 
@@ -167,7 +167,6 @@ class flask_Main:
                                 chatResult[item][1]) + '", DateTime:"' + str(chatResult[item][2]) + '"},'
                         returnstring = returnstring[:-1]
                         returnstring = returnstring + "]"
-                        print(returnstring)
                         return returnstring
 
             else:
@@ -184,7 +183,7 @@ class flask_Main:
                 if requestdevice_id in self.idBindDict:
                     if requestaccount_id == self.idBindDict[requestdevice_id]:
                         chatResult = database_Handlers.database_Handlers().getPartialChat(requestContent)
-                        print(chatResult)
+
                         if not chatResult:
                             return "Error retrieving chat"
 
