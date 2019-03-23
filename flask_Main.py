@@ -172,6 +172,7 @@ class flask_Main:
             else:
                 return "unsuccessful"
 
+
         # Retrieve messages after a given datetime of a chat
         @self.flaskApp.route("/sapp_getPartialChat", methods=["POST"])
         def sapp_getPartialChat():
@@ -198,6 +199,7 @@ class flask_Main:
             else:
                 return "unsuccessful"
 
+
         # cleat a single chat of all messages
         @self.flaskApp.route("/sapp_clearChat", methods=["POST"])
         def sapp_clearChat():
@@ -213,6 +215,7 @@ class flask_Main:
 
             else:
                 return "unsuccessful"
+
 
         @self.flaskApp.route("/sapp_addMessage", methods=["POST"])
         def sapp_addMessage():

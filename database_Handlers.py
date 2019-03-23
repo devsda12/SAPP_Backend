@@ -201,6 +201,7 @@ class database_Handlers:
             self.sapp_database.commit()
             return True
 
+
     # Retrieve messages of a chat
     def getCompleteChat(self, requestContent):
         chatDict = {}
@@ -218,13 +219,14 @@ class database_Handlers:
         else:
             return chatDict
 
+
     # Creer hier nog een functie die alle berichten van een bepaalde tabel ophaald die geplaatst zijn na een bepaalde datetime.
     def getPartialChat(self, requestContent):
-        requestDateTime = requestContent["DateTime"]
+        requestDateTime = requestContent["lastMessageDate"]
         requestconv_id = requestContent["conv_Id"]
         chatDict = {}
 
-        self.sapp_cursor.execute('SELECT * FROM ' + requestconv_id + ' WHERE DateTime >= "' + requestDateTime + '";')
+        self.sapp_cursor.execute('SELECT * FROM ' + requestconv_id + ' WHERE DateTime > "' + requestDateTime + '";')
         result = self.sapp_cursor.fetchall()
 
         for item in result:
@@ -236,6 +238,7 @@ class database_Handlers:
         else:
             return chatDict
 
+
     # Clears a single chat of all messages
     def clearChat(self, requestContent):
         requestconv_id = requestContent["conv_Id"]
@@ -243,6 +246,7 @@ class database_Handlers:
         self.sapp_cursor.execute('DELETE * FROM ' + requestconv_id + ';')
 
         return True
+
 
     # Add a message to conversation table
     def addMessage(self, requestContent):
