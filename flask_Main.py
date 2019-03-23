@@ -164,7 +164,7 @@ class flask_Main:
                         for item in chatResult:
                             returnstring = returnstring + '{Sender:"' + item + '", Receiver:"' + str(
                                 chatResult[item][0]) + '", Message:"' + str(
-                                chatResult[item][1]) + '", DateTime:"' + str(chatResult[item][2]) + "},"
+                                chatResult[item][1]) + '", DateTime:"' + str(chatResult[item][2]) + '"},'
                         returnstring = returnstring[:-1]
                         returnstring = returnstring + "]"
                         print(returnstring)
@@ -192,7 +192,7 @@ class flask_Main:
                         for item in chatResult:
                             returnstring = returnstring + '{Sender:"' + item + '", Receiver:"' + str(
                                 chatResult[item][0]) + '", Message:"' + str(
-                                chatResult[item][1]) + '", DateTime:"' + str(chatResult[item][2]) + "},"
+                                chatResult[item][1]) + '", DateTime:"' + str(chatResult[item][2]) + '"},'
                         returnstring = returnstring[:-1]
                         returnstring = returnstring + "]"
                         return returnstring
