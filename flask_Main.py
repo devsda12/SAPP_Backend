@@ -167,6 +167,7 @@ class flask_Main:
                                 chatResult[item][1]) + '", DateTime:"' + str(chatResult[item][2]) + "},"
                         returnstring = returnstring[:-1]
                         returnstring = returnstring + "]"
+                        print(returnstring)
                         return returnstring
 
             else:
