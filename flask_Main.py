@@ -151,8 +151,8 @@ class flask_Main:
         def sapp_getCompleteChat():
             if request.is_json:
                 requestContent = request.get_json()
-                requestdevice_id = requestContent["device_Id"]
-                requestaccount_id = requestContent["acc_Id"]
+                requestdevice_id = requestContent[0]["device_Id"]
+                requestaccount_id = requestContent[0]["acc_Id"]
                 if requestdevice_id in self.idBindDict:
                     if requestaccount_id == self.idBindDict[requestdevice_id]:
                         chatResult = database_Handlers.database_Handlers().getCompleteChat(requestContent)
@@ -178,8 +178,8 @@ class flask_Main:
         def sapp_getPartialChat():
             if request.is_json:
                 requestContent = request.get_json()
-                requestdevice_id = requestContent["device_Id"]
-                requestaccount_id = requestContent["acc_Id"]
+                requestdevice_id = requestContent[0]["device_Id"]
+                requestaccount_id = requestContent[0]["acc_Id"]
                 if requestdevice_id in self.idBindDict:
                     if requestaccount_id == self.idBindDict[requestdevice_id]:
                         chatResult = database_Handlers.database_Handlers().getPartialChat(requestContent)
