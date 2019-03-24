@@ -268,7 +268,7 @@ class database_Handlers:
                                  'SET conv_LastMessageSender = "' + requestSender + '", '
                                     'conv_LastMessage =  "' + requestMessage + '", '
                                     'conv_LastMessageDate = "' + requestDatetime + '" '
-                                    'WHERE conv_Id = "' + requestconv_id + '");')
+                                    'WHERE conv_Id = "' + requestconv_id + '";')
 
         return True
 
