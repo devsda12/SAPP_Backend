@@ -228,7 +228,7 @@ class flask_Main:
                         result = database_Handlers.database_Handlers().addMessage(requestContent)
 
                         if result:
-                            return '{insertResult:"true"'
+                            return '{insertResult:"true"}'
                         else:
                             return "unsuccessful"
 

@@ -254,20 +254,21 @@ class database_Handlers:
         requestSender = requestContent["Sender"]
         requestReceiver = requestContent["Receiver"]
         requestMessage = requestContent["Message"]
+        requestDatetime = requestContent["DateTime"]
 
-        self.sapp_cursor.execute('SELECT CURRENT_TIMESTAMP();')
-        result = self.sapp_cursor.fetchone()
+        #self.sapp_cursor.execute('SELECT CURRENT_TIMESTAMP();')
+        #result = self.sapp_cursor.fetchone()
 
         self.sapp_cursor.execute('INSERT INTO ' + requestconv_id + ' (Sender, Receiver, Message, DateTime) '
                                                                    'VALUES ("' + requestSender + '", '
                                                                             '"' + requestReceiver + '", '
                                                                             '"' + requestMessage + '", '
-                                                                            '"' + result[0] + '";')
-        self.sapp_cursor.execute('UPDATE Conv_Table'
+                                                                            '"' + requestDatetime + '");')
+        self.sapp_cursor.execute('UPDATE Conv_Table '
                                  'SET conv_LastMessageSender = "' + requestSender + '", '
                                     'conv_LastMessage =  "' + requestMessage + '", '
-                                    'conv_LastMessageDate = "' + result[0] + '" '
-                                    'WHERE conv_Id = "' + requestconv_id + '";')
+                                    'conv_LastMessageDate = "' + requestDatetime + '" '
+                                    'WHERE conv_Id = "' + requestconv_id + '");')
 
         return True
 
