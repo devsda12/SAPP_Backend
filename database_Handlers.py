@@ -264,11 +264,14 @@ class database_Handlers:
                                                                             '"' + requestReceiver + '", '
                                                                             '"' + requestMessage + '", '
                                                                             '"' + requestDatetime + '");')
+        self.sapp_database.commit()
+
         self.sapp_cursor.execute('UPDATE Conv_Table '
                                  'SET conv_LastMessageSender = "' + requestSender + '", '
                                     'conv_LastMessage =  "' + requestMessage + '", '
                                     'conv_LastMessageDate = "' + requestDatetime + '" '
                                     'WHERE conv_Id = "' + requestconv_id + '";')
+        self.sapp_database.commit()
 
         return True
 
