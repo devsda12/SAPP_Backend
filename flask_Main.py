@@ -227,7 +227,10 @@ class flask_Main:
                     if requestaccount_id == self.idBindDict[requestdevice_id]:
                         result = database_Handlers.database_Handlers().addMessage(requestContent)
 
-                        return result
+                        if result:
+                            return '{insertResult:"true"'
+                        else:
+                            return "unsuccessful"
 
             else:
                 return "unsuccessful"
