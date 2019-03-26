@@ -232,6 +232,7 @@ class database_Handlers:
         for item in result:
             chatDict[item[0]] = [item[1], item[2], item[3]]
 
+        print(chatDict)
         # Checking whether the dict is empty
         if len(chatDict) == 0:
             return False
