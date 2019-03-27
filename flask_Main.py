@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import request
 import database_Handlers
+import firebase_Handler
 
 class flask_Main:
 
@@ -229,6 +230,16 @@ class flask_Main:
                         result = database_Handlers.database_Handlers().addMessage(requestContent)
 
                         if result:
+                            #Firebase message part under here (first checking if the targeted acc id is bound)
+                            targetedId = database_Handlers.database_Handlers().fetchAccIdByUsername(requestContent["Receiver"])
+                            for item in self.idBindDict:
+                                if targetedId == self.idBindDict[item][0]:
+                                    targetedFirebaseId = self.idBindDict[item][1]
+
+                                    #Now calling the firebase handler
+                                    firebase_Handler.firebase_Handler().sendRefreshRequest(targetedFirebaseId, requestContent["conv_Id"])
+
+
                             return '{insertResult:"true"}'
                         else:
                             return "unsuccessful"

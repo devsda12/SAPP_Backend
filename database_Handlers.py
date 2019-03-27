@@ -1,6 +1,7 @@
 import string
 import random
 import mysql.connector
+import firebase_Handler
 from flask import request
 
 class database_Handlers:
@@ -277,6 +278,12 @@ class database_Handlers:
         self.sapp_database.commit()
 
         return True
+
+    #NON primary database functions
+    def fetchAccIdByUsername(self, username):
+        self.sapp_cursor.execute('SELECT acc_Id FROM Acc_Table WHERE acc_Username = "' + username + '";')
+        result = self.sapp_cursor.fetchall()
+        return result[0][0]
 
     # NON-database functions
 

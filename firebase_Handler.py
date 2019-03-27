@@ -11,11 +11,11 @@ class firebase_Handler:
 
 
     #Function to send an "notification" to the firebase api which in turn sends it through to the given device registration ID
-    def sendRefreshRequest(self, registrationId):
+    def sendRefreshRequest(self, registrationId, conv_Id):
         #First making the message
         tempMessage = messaging.Message(
             data={
-                "dummy":"true"
+                "conv_Id":conv_Id
             },
             token=registrationId
         )
