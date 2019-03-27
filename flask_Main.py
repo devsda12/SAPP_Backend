@@ -42,7 +42,8 @@ class flask_Main:
 
                 #If the login is succesful the account ID needs to be bound to the device ID for access
                 requestedDeviceId = requestContent["device_Id"]
-                self.idBindDict[requestedDeviceId] = loginResult   #ID binding turned off for now until you can actually login
+                requestedFirebaseToken = requestContent["device_FirebaseToken"]
+                self.idBindDict[requestedDeviceId] = [loginResult, requestedFirebaseToken]
                 return '{acc_Id:"' + loginResult + '"}'
             else:
                 return "Login Unsuccessful"
@@ -71,7 +72,7 @@ class flask_Main:
                 requestdevice_id = requestContent[0]["device_Id"]
                 requestaccount_id = requestContent[0]["acc_Id"]
                 if requestdevice_id in self.idBindDict:
-                    if requestaccount_id == self.idBindDict[requestdevice_id]:
+                    if requestaccount_id == self.idBindDict[requestdevice_id][0]:
                         chatResult = database_Handlers.database_Handlers().getChatsV3(requestContent)
                         if not chatResult:
                             return "No chats found"
@@ -95,7 +96,7 @@ class flask_Main:
                 requestdevice_id = requestContent[0]["device_Id"]
                 requestaccount_id = requestContent[0]["acc_Id"]
                 if requestdevice_id in self.idBindDict:
-                    if requestaccount_id == self.idBindDict[requestdevice_id]:
+                    if requestaccount_id == self.idBindDict[requestdevice_id][0]:
                         userResults = database_Handlers.database_Handlers().findUser(requestContent)
                         if not userResults:
                             return "No users found"
@@ -119,7 +120,7 @@ class flask_Main:
                 requestdevice_id = requestContent["device_Id"]
                 requestaccount_id = requestContent["acc_Id"]
                 if requestdevice_id in self.idBindDict:
-                    if requestaccount_id == self.idBindDict[requestdevice_id]:
+                    if requestaccount_id == self.idBindDict[requestdevice_id][0]:
 
                         tableResults = database_Handlers.database_Handlers().createTable(requestContent)
 
@@ -139,7 +140,7 @@ class flask_Main:
                 requestdevice_id = requestContent["device_Id"]
                 requestaccount_id = requestContent["acc_Id"]
                 if requestdevice_id in self.idBindDict:
-                    if requestaccount_id == self.idBindDict[requestdevice_id]:
+                    if requestaccount_id == self.idBindDict[requestdevice_id][0]:
                         del self.idBindDict[requestdevice_id]
                         return '{deleteResult:"true"}'
 
@@ -154,7 +155,7 @@ class flask_Main:
                 requestdevice_id = requestContent[0]["device_Id"]
                 requestaccount_id = requestContent[0]["acc_Id"]
                 if requestdevice_id in self.idBindDict:
-                    if requestaccount_id == self.idBindDict[requestdevice_id]:
+                    if requestaccount_id == self.idBindDict[requestdevice_id][0]:
                         chatResult = database_Handlers.database_Handlers().getCompleteChat(requestContent)
 
                         if not chatResult:
@@ -181,7 +182,7 @@ class flask_Main:
                 requestdevice_id = requestContent[0]["device_Id"]
                 requestaccount_id = requestContent[0]["acc_Id"]
                 if requestdevice_id in self.idBindDict:
-                    if requestaccount_id == self.idBindDict[requestdevice_id]:
+                    if requestaccount_id == self.idBindDict[requestdevice_id][0]:
                         chatResult = database_Handlers.database_Handlers().getPartialChat(requestContent)
 
                         if not chatResult:
@@ -208,7 +209,7 @@ class flask_Main:
                 requestdevice_id = requestContent["device_Id"]
                 requestaccount_id = requestContent["acc_Id"]
                 if requestdevice_id in self.idBindDict:
-                    if requestaccount_id == self.idBindDict[requestdevice_id]:
+                    if requestaccount_id == self.idBindDict[requestdevice_id][0]:
                         result = database_Handlers.database_Handlers().clearChat(requestContent)
 
                         return result
@@ -224,7 +225,7 @@ class flask_Main:
                 requestdevice_id = requestContent["device_Id"]
                 requestaccount_id = requestContent["acc_Id"]
                 if requestdevice_id in self.idBindDict:
-                    if requestaccount_id == self.idBindDict[requestdevice_id]:
+                    if requestaccount_id == self.idBindDict[requestdevice_id][0]:
                         result = database_Handlers.database_Handlers().addMessage(requestContent)
 
                         if result:
