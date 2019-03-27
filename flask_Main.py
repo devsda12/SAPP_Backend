@@ -43,8 +43,11 @@ class flask_Main:
 
                 #If the login is succesful the account ID needs to be bound to the device ID for access
                 requestedDeviceId = requestContent["device_Id"]
-                requestedFirebaseToken = requestContent["device_FirebaseToken"]
-                self.idBindDict[requestedDeviceId] = [loginResult, requestedFirebaseToken]
+                if requestContent["device_FirebaseToken"] in requestContent:
+                    requestedFirebaseToken = requestContent["device_FirebaseToken"]
+                    self.idBindDict[requestedDeviceId] = [loginResult, requestedFirebaseToken]
+                else:
+                    self.idBindDict[requestedDeviceId] = [loginResult, 0]
                 return '{acc_Id:"' + loginResult + '"}'
             else:
                 return "Login Unsuccessful"
