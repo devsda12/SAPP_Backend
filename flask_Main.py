@@ -3,6 +3,9 @@ from flask import request
 import database_Handlers
 import firebase_Handler
 
+import firebase_admin
+from firebase_admin import credentials
+
 class flask_Main:
 
     def __init__(self):
@@ -11,6 +14,10 @@ class flask_Main:
 
         #Defining the dictionary for binding account ID's to device ID's
         self.idBindDict = {}
+
+        # Declaring the global firebase variables
+        self.creds = credentials.Certificate("/home/back-end/sapp-firebase-notifications-firebase-adminsdk-bcjvu-cdca8ff155.json")
+        self.sapp_firebase_app = firebase_admin.initialize_app(self.creds)
 
     #The main run function that runs when the program is started
     def run(self):
