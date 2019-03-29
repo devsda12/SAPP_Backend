@@ -3,6 +3,9 @@ from flask import request
 import database_Handlers
 import firebase_Handler
 
+import firebase_admin
+from firebase_admin import credentials
+
 class flask_Main:
 
     def __init__(self):
@@ -249,6 +252,9 @@ class flask_Main:
 
             else:
                 return "unsuccessful"
+
+        creds = credentials.Certificate("/home/back-end/sapp-firebase-notifications-firebase-adminsdk-bcjvu-cdca8ff155.json")
+        sapp_app = firebase_admin.initialize_app(self.creds)
 
         #Here in the bottom of the run the actual api is run with flaskapp.
         self.flaskApp.run(host="0.0.0.0")
