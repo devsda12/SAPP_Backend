@@ -254,7 +254,7 @@ class flask_Main:
                 return "unsuccessful"
 
         creds = credentials.Certificate("/home/back-end/sapp-firebase-notifications-firebase-adminsdk-bcjvu-cdca8ff155.json")
-        sapp_app = firebase_admin.initialize_app(self.creds)
+        sapp_app = firebase_admin.initialize_app(creds)
 
         #Here in the bottom of the run the actual api is run with flaskapp.
         self.flaskApp.run(host="0.0.0.0")
