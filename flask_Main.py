@@ -177,8 +177,7 @@ class flask_Main:
                         returnstring = returnstring + "]"
                         return returnstring
 
-            else:
-                return "unsuccessful"
+            return "unsuccessful"
 
 
         # Retrieve messages after a given datetime of a chat
@@ -204,8 +203,7 @@ class flask_Main:
                         returnstring = returnstring + "]"
                         return returnstring
 
-            else:
-                return "unsuccessful"
+            return "unsuccessful"
 
 
         # cleat a single chat of all messages
@@ -221,8 +219,7 @@ class flask_Main:
 
                         return result
 
-            else:
-                return "unsuccessful"
+            return "unsuccessful"
 
 
         @self.flaskApp.route("/sapp_addMessage", methods=["POST"])
@@ -250,8 +247,7 @@ class flask_Main:
                         else:
                             return "unsuccessful"
 
-            else:
-                return "unsuccessful"
+            return "unsuccessful"
 
         creds = credentials.Certificate("/home/back-end/sapp-firebase-notifications-firebase-adminsdk-bcjvu-cdca8ff155.json")
         sapp_app = firebase_admin.initialize_app(creds)
