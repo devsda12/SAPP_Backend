@@ -5,6 +5,7 @@ import firebase_Handler
 
 import firebase_admin
 from firebase_admin import credentials
+from firebase_admin import messaging
 
 class flask_Main:
 
@@ -259,6 +260,19 @@ class flask_Main:
 
         #Here in the bottom of the run the actual api is run with flaskapp.
         self.flaskApp.run(host="0.0.0.0")
+
+def sendRefreshRequest(self, registrationId, conv_Id):
+    #First making the message
+    tempMessage = messaging.Message(
+        data={
+            "conv_Id":conv_Id
+        },
+        token=registrationId
+    )
+
+    #Now sending the message to the device with the corresponding ID
+    response = messaging.send(tempMessage)
+    print(response)
 
 if __name__ == "__main__":
     flask_Main().run()
