@@ -64,6 +64,12 @@ class flask_Main:
                 requestdevice_id = requestContent["device_Id"]
                 requestaccount_id = requestContent["acc_Id"]
                 requestfirebase_token = requestContent["newToken"]
+                if requestdevice_id in self.idBindDict:
+                    if requestaccount_id == self.idBindDict[requestdevice_id][0]:
+                        self.idBindDict[requestdevice_id][1] = requestfirebase_token
+
+                        return '{insertedToken:"' + requestfirebase_token + '"}'
+            return "Unsuccessful"
 
 
         #The function to create a new account in the database
