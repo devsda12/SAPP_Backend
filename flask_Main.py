@@ -56,6 +56,16 @@ class flask_Main:
                 return "Login Unsuccessful"
 
 
+        #Function to update a given and bound firebase token of a user
+        @self.flaskApp.route("/sapp_updateFirebaseToken", methods=["POST"])
+        def sapp_updateFirebaseToken():
+            if request.is_json:
+                requestContent = request.get_json()
+                requestdevice_id = requestContent["device_Id"]
+                requestaccount_id = requestContent["acc_Id"]
+                requestfirebase_token = requestContent["newToken"]
+
+
         #The function to create a new account in the database
         @self.flaskApp.route("/sapp_createAccount", methods=["POST"])
         def sapp_createAccount():
@@ -222,6 +232,7 @@ class flask_Main:
             return "unsuccessful"
 
 
+        #Add a single message to the database
         @self.flaskApp.route("/sapp_addMessage", methods=["POST"])
         def sapp_addMessage():
             if request.is_json:
@@ -249,6 +260,8 @@ class flask_Main:
 
             return "unsuccessful"
 
+
+        #For now defined here, this could be changed in the future if needed. Caused errors in the init function of the firebase handler
         creds = credentials.Certificate("/home/back-end/sapp-firebase-notifications-firebase-adminsdk-bcjvu-cdca8ff155.json")
         sapp_app = firebase_admin.initialize_app(creds)
 
