@@ -271,6 +271,31 @@ class flask_Main:
 
             return "unsuccessful"
 
+        # Request the statistical data from the database handler and send it to the application
+        @self.flaskApp.route("/sapp_requestStats", methods=["POST"])
+        def sapp_requestStats():
+            if request.is_json:
+                requestContent = request.get_json()
+                requestdevice_id = requestContent["device_Id"]
+                requestaccount_id = requestContent["acc_Id"]
+
+                if requestdevice_id in self.idBindDict:
+                    if requestaccount_id == self.idBindDict[requestdevice_id][0]:
+                        result = database_Handlers.database_Handlers().requestStats()
+
+                        if not result:
+                            return "Error retrieving chat"
+
+                        returnstring = "["
+                        for item in result:
+                            returnstring = returnstring + '{logins:"' + result[item][0] + '", messages:"' + result[item][1] + '", weekday:"' + result[item] + '"},'
+                        returnstring = returnstring[:-1]
+                        returnstring = returnstring + "]"
+                        return returnstring
+
+            else:
+                return "unsuccessful"
+
 
         #For now defined here, this could be changed in the future if needed. Caused errors in the init function of the firebase handler
         creds = credentials.Certificate("/home/back-end/sapp-firebase-notifications-firebase-adminsdk-bcjvu-cdca8ff155.json")

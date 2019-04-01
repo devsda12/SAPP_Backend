@@ -285,6 +285,41 @@ class database_Handlers:
         result = self.sapp_cursor.fetchall()
         return result[0][0]
 
+    # request statistical data from database
+    def requestStats(self):
+        tempDict = {}
+        self.sapp_cursor.execute('SELECT * FROM StatsTable;')
+        result = self.sapp_cursor.fetchall()
+        # The Format: {{10,2,1,'Monday'},{50,4,1,'Tuesday'}}
+
+        for item in result:
+            tempDict[3] = [item[0], item[1]]
+
+        return tempDict
+
+    # Add stat to database
+    def addStat(self, Type):
+        # Type will be given in the function that calls this functions
+        # For example if addMessage calls this Type will be message
+
+        # Check if its the same week
+        self.sapp_cursor.execute('SELECT week FROM StatsTable')
+        resultStatstWeek = self.sapp_cursor.fetchone()
+        self.sapp_cursor.execute('SELECT DATEPART(wk, GETDATE());')
+        resultCurrentWeek = self.sapp_cursor.fetchone()
+
+        if resultStatstWeek[0] != resultCurrentWeek[0]:
+            self.sapp_cursor.execute('UPDATE StatsTable SET logins = 0, messages = 0;')
+            self.sapp_cursor.execute('UPDATE StatsTable SET week = ' + resultCurrentWeek[0] + ';')
+            self.sapp_cursor.commit()
+
+        self.sapp_cursor.execute('SELECT DATENAME(dw, GETDATE());')
+        resultWeekDay = self.sapp_cursor.fetchone()
+
+        self.sapp_cursor.execute('UPDATE StatsTable Set ' + Type + ' = ' + Type + ' + 1 WHERE weekday = ' + resultWeekDay + ';')
+        self.sapp_cursor.commit()
+
+
     # NON-database functions
 
     #Function to generate 10 digit ID
