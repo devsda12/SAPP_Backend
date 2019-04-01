@@ -49,8 +49,10 @@ class flask_Main:
                 if "device_FirebaseToken" in requestContent:
                     requestedFirebaseToken = requestContent["device_FirebaseToken"]
                     self.idBindDict[requestedDeviceId] = [loginResult, requestedFirebaseToken]
+                    print("Dict: " + self.idBindDict)
                 else:
                     self.idBindDict[requestedDeviceId] = [loginResult, 0]
+                    print("Dict: " + self.idBindDict)
                 return '{acc_Id:"' + loginResult + '"}'
             else:
                 return "Login Unsuccessful"
@@ -67,6 +69,9 @@ class flask_Main:
                 if requestdevice_id in self.idBindDict:
                     if requestaccount_id == self.idBindDict[requestdevice_id][0]:
                         self.idBindDict[requestdevice_id][1] = requestfirebase_token
+                        print("Firebase Token: " + requestfirebase_token)
+                        print("Dict: " + self.idBindDict)
+
 
                         return '{insertedToken:"' + requestfirebase_token + '"}'
             return "Unsuccessful"
