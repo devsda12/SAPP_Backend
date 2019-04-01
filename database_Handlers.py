@@ -211,8 +211,10 @@ class database_Handlers:
         self.sapp_cursor.execute('SELECT * FROM ' + requestconv_id + ';')
         result = self.sapp_cursor.fetchall()
 
+        i = 0
         for item in result:
-            chatDict[item[0]] = [item[1], item[2], item[3]]
+            chatDict[i] = [item[0], item[1], item[2], item[3]]
+            i += 1
 
         # Checking whether the dict is empty
         if len(chatDict) == 0:
