@@ -197,6 +197,7 @@ class flask_Main:
                                 chatResult[item][2]) + '", DateTime:"' + str(chatResult[item][3]) + '"},'
                         returnstring = returnstring[:-1]
                         returnstring = returnstring + "]"
+                        print(returnstring)
                         return returnstring
 
             return "unsuccessful"
