@@ -24,3 +24,4 @@ class firebase_Handler:
         #Now sending the message to the device with the corresponding ID
         response = messaging.send(tempMessage)
         print(response)
+        print(registrationId)
