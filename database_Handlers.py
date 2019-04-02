@@ -1,6 +1,7 @@
 import string
 import random
 import mysql.connector
+import datetime
 import firebase_Handler
 from flask import request
 
@@ -307,16 +308,15 @@ class database_Handlers:
         # Check if its the same week
         self.sapp_cursor.execute('SELECT week FROM StatsTable')
         resultStatstWeek = self.sapp_cursor.fetchone()
-        self.sapp_cursor.execute('SELECT DATEPART(wk, GETDATE());')
-        resultCurrentWeek = self.sapp_cursor.fetchone()
+        resultCurrentWeek = datetime.date.today().isocalendar()[1]
 
         if resultStatstWeek[0] != resultCurrentWeek[0]:
             self.sapp_cursor.execute('UPDATE StatsTable SET logins = 0, messages = 0;')
             self.sapp_cursor.execute('UPDATE StatsTable SET week = ' + resultCurrentWeek[0] + ';')
             self.sapp_cursor.commit()
 
-        self.sapp_cursor.execute('SELECT DATENAME(dw, GETDATE());')
-        resultWeekDay = self.sapp_cursor.fetchone()
+        weekDays = ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+        resultWeekDay = weekDays[datetime.date.today().weekday()]
 
         self.sapp_cursor.execute('UPDATE StatsTable Set ' + Type + ' = ' + Type + ' + 1 WHERE weekday = ' + resultWeekDay + ';')
         self.sapp_cursor.commit()
