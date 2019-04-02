@@ -311,7 +311,8 @@ class database_Handlers:
         resultCurrentWeek = datetime.date.today().isocalendar()[1]
 
         if resultStatstWeek[0] != resultCurrentWeek:
-            self.sapp_cursor.execute('UPDATE StatsTable SET logins = 0, messages = 0;')
+            self.sapp_cursor.execute('UPDATE StatsTable SET logins = 0;')
+            self.sapp_cursor.execute('UPDATE StatsTable SET messages = 0;')
             self.sapp_cursor.execute('UPDATE StatsTable SET week = ' + resultCurrentWeek + ';')
             self.sapp_cursor.commit()
 
