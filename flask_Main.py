@@ -294,6 +294,7 @@ class flask_Main:
                             returnstring = returnstring + '{logins:"' + str(result[item][0]) + '", messages:"' + str(result[item][1]) + '", weekday:"' + str(result[item]) + '"},'
                         returnstring = returnstring[:-1]
                         returnstring = returnstring + "]"
+                        print(returnstring)
                         return returnstring
 
             else:
