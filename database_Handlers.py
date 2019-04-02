@@ -312,7 +312,9 @@ class database_Handlers:
 
         if resultStatstWeek[0] != resultCurrentWeek:
             self.sapp_cursor.execute('UPDATE StatsTable SET logins = 0;')
+            self.sapp_database.commit()
             self.sapp_cursor.execute('UPDATE StatsTable SET messages = 0;')
+            self.sapp_database.commit()
             self.sapp_cursor.execute('UPDATE StatsTable SET week = ' + resultCurrentWeek + ';')
             self.sapp_database.commit()
 
@@ -320,6 +322,7 @@ class database_Handlers:
         resultWeekDay = weekDays[datetime.date.today().weekday()]
 
         print('UPDATE StatsTable Set ' + Type + ' = ' + Type + ' + 1 WHERE weekday = "' + resultWeekDay + '";')
+        self.sapp_database.commit()
         self.sapp_cursor.execute('UPDATE StatsTable Set ' + Type + ' = ' + Type + ' + 1 WHERE weekday = "' + resultWeekDay + '";')
         self.sapp_database.commit()
 
