@@ -291,7 +291,7 @@ class flask_Main:
 
                         returnstring = "["
                         for item in result:
-                            returnstring = returnstring + '{logins:"' + str(result[item][0]) + '", messages:"' + str(result[item][1]) + '", weekday:"' + str(result[item]) + '"},'
+                            returnstring = returnstring + '{logins:"' + str(result[item][0]) + '", messages:"' + str(result[item][1]) + '", weekday:"' + str(item) + '"},'
                         returnstring = returnstring[:-1]
                         returnstring = returnstring + "]"
                         print(returnstring)
