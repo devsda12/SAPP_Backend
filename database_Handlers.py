@@ -296,7 +296,7 @@ class database_Handlers:
         # The Format: {{10,2,1,'Monday'},{50,4,1,'Tuesday'}}
 
         for item in result:
-            tempDict[3] = [item[0], item[1]]
+            tempDict[item[3]] = [item[0], item[1]]
 
         return tempDict
 
