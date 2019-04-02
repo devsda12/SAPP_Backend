@@ -312,9 +312,12 @@ class database_Handlers:
 
         print(resultStatstWeek[0])
         print(resultCurrentWeek)
+        print(resultStatstWeek[0] != resultCurrentWeek)
+        print(type(resultCurrentWeek))
+        print(type(resultStatstWeek[0]))
 
         if resultStatstWeek[0] != resultCurrentWeek:
-            print("komt niet overeen")
+            print(resultStatstWeek[0] != resultCurrentWeek)
             self.sapp_cursor.execute('UPDATE StatsTable SET logins = 0;')
             self.sapp_database.commit()
             self.sapp_cursor.execute('UPDATE StatsTable SET messages = 0;')
