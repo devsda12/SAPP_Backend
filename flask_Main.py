@@ -53,6 +53,7 @@ class flask_Main:
                 else:
                     self.idBindDict[requestedDeviceId] = [loginResult, 0]
                     print(self.idBindDict)
+                database_Handlers.database_Handlers().addStat('logins')
                 return '{acc_Id:"' + loginResult + '"}'
             else:
                 return "Login Unsuccessful"
@@ -266,7 +267,7 @@ class flask_Main:
                                     #Now calling the firebase handler
                                     firebase_Handler.firebase_Handler().sendRefreshRequest(targetedFirebaseId, requestContent["conv_Id"])
 
-
+                            database_Handlers.database_Handlers().addStat('messages')
                             return '{insertResult:"true"}'
                         else:
                             return "unsuccessful"
