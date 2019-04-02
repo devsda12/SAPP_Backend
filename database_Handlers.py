@@ -11,7 +11,7 @@ class database_Handlers:
 
         #Declaring the global database handler and its cursor
         self.sapp_database = mysql.connector.connect(host="localhost", user="sapp_user", passwd="SAPP-PASSWORD_F0R-YOU", database="SAPP_Backend")
-        self.sapp_cursor = self.sapp_database.cursor()
+        self.sapp_cursor = self.sapp_database.cursor(buffered=True)
 
     #The device identification database function
     def identifyDevice(self, requestContent):
@@ -308,19 +308,20 @@ class database_Handlers:
         # Check if its the same week
         self.sapp_cursor.execute('SELECT week FROM StatsTable')
         resultStatstWeek = self.sapp_cursor.fetchone()
-        resultCurrentWeek = datetime.date.today().isocalendar()[1]
+        resultCurrentWeek = str(datetime.date.today().isocalendar()[1])
 
         if resultStatstWeek[0] != resultCurrentWeek:
             self.sapp_cursor.execute('UPDATE StatsTable SET logins = 0;')
             self.sapp_cursor.execute('UPDATE StatsTable SET messages = 0;')
             self.sapp_cursor.execute('UPDATE StatsTable SET week = ' + resultCurrentWeek + ';')
-            self.sapp_cursor.commit()
+            self.sapp_database.commit()
 
         weekDays = ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
         resultWeekDay = weekDays[datetime.date.today().weekday()]
 
-        self.sapp_cursor.execute('UPDATE StatsTable Set ' + Type + ' = ' + Type + ' + 1 WHERE weekday = ' + resultWeekDay + ';')
-        self.sapp_cursor.commit()
+        print('UPDATE StatsTable Set ' + Type + ' = ' + Type + ' + 1 WHERE weekday = "' + resultWeekDay + '";')
+        self.sapp_cursor.execute('UPDATE StatsTable Set ' + Type + ' = ' + Type + ' + 1 WHERE weekday = "' + resultWeekDay + '";')
+        self.sapp_database.commit()
 
 
     # NON-database functions
