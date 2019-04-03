@@ -68,6 +68,8 @@ class flask_Main:
                 requestaccount_id = requestContent["acc_Id"]
                 requestfirebase_token = requestContent["newToken"]
                 if requestdevice_id in self.idBindDict:
+                    print(self.idBindDict[requestdevice_id][0])
+                    print(requestaccount_id)
                     if requestaccount_id == self.idBindDict[requestdevice_id][0]:
                         self.idBindDict[requestdevice_id][1] = requestfirebase_token
                         print("Firebase Token: " + requestfirebase_token)
