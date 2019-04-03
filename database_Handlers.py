@@ -238,7 +238,7 @@ class database_Handlers:
             chatDict[i] = [item[0], item[1], item[2], item[3]]
             i += 1
 
-        print(chatDict)
+        print("DatabaseHandler PartialChat print: " + str(chatDict))
         # Checking whether the dict is empty
         if len(chatDict) == 0:
             return False
@@ -321,7 +321,7 @@ class database_Handlers:
         weekDays = ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
         resultWeekDay = weekDays[datetime.date.today().weekday()]
 
-        print('UPDATE StatsTable Set ' + Type + ' = ' + Type + ' + 1 WHERE weekday = "' + resultWeekDay + '";')
+        print('DatabaseHandler addStat print: UPDATE StatsTable Set ' + Type + ' = ' + Type + ' + 1 WHERE weekday = "' + resultWeekDay + '";')
         self.sapp_database.commit()
         self.sapp_cursor.execute('UPDATE StatsTable Set ' + Type + ' = ' + Type + ' + 1 WHERE weekday = "' + resultWeekDay + '";')
         self.sapp_database.commit()

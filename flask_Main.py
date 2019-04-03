@@ -49,10 +49,10 @@ class flask_Main:
                 if "device_FirebaseToken" in requestContent:
                     requestedFirebaseToken = requestContent["device_FirebaseToken"]
                     self.idBindDict[requestedDeviceId] = [loginResult, requestedFirebaseToken]
-                    print(self.idBindDict)
+                    print("LoginPrint: " + str(self.idBindDict))
                 else:
                     self.idBindDict[requestedDeviceId] = [loginResult, 0]
-                    print(self.idBindDict)
+                    print("LoginPrint" + str(self.idBindDict))
                 database_Handlers.database_Handlers().addStat('logins')
                 return '{acc_Id:"' + loginResult + '"}'
             else:
@@ -68,12 +68,12 @@ class flask_Main:
                 requestaccount_id = requestContent["acc_Id"]
                 requestfirebase_token = requestContent["newToken"]
                 if requestdevice_id in self.idBindDict:
-                    print(self.idBindDict[requestdevice_id][0])
-                    print(requestaccount_id)
+                    print("UpdateFirebaseTokenPrint: " + str(self.idBindDict[requestdevice_id][0]))
+                    print("UpdateFirebaseTokenPrint: " + requestaccount_id)
                     if requestaccount_id == self.idBindDict[requestdevice_id][0]:
                         self.idBindDict[requestdevice_id][1] = requestfirebase_token
                         print("Firebase Token: " + requestfirebase_token)
-                        print(self.idBindDict)
+                        print("UpdateFirebaseTokenPrint: " + str(self.idBindDict))
 
 
                         return '{insertedToken:"' + requestfirebase_token + '"}'
@@ -200,7 +200,7 @@ class flask_Main:
                                 chatResult[item][2]) + '", DateTime:"' + str(chatResult[item][3]) + '"},'
                         returnstring = returnstring[:-1]
                         returnstring = returnstring + "]"
-                        print(returnstring)
+                        print("GetCompleteChatPrint: " + returnstring)
                         return returnstring
 
             return "unsuccessful"
@@ -296,7 +296,7 @@ class flask_Main:
                             returnstring = returnstring + '{logins:"' + str(result[item][0]) + '", messages:"' + str(result[item][1]) + '", weekday:"' + str(item) + '"},'
                         returnstring = returnstring[:-1]
                         returnstring = returnstring + "]"
-                        print(returnstring)
+                        print("RequestStatsStringPrint: " + returnstring)
                         return returnstring
 
             else:
