@@ -298,7 +298,13 @@ class database_Handlers:
         for item in result:
             tempDict[item[3]] = [item[0], item[1]]
 
+        self.sapp_cursor.execute('SELECT * FROM StatsTable;')
+        result = self.sapp_cursor.fetchall()
+        for item in result:
+            tempDict[item[3] + "Old"] = [item[0], item[1]]
+
         return tempDict
+
 
     # Add stat to database
     def addStat(self, Type):
@@ -311,6 +317,10 @@ class database_Handlers:
         resultCurrentWeek = str(datetime.date.today().isocalendar()[1])
 
         if str(resultStatstWeek[0]) != resultCurrentWeek:
+
+            self.sapp_cursor.execute('DELETE FROM StatsTableOld;')
+            self.sapp_cursor.execute('INSERT INTO StatsTableOld SELECT * FROM StatsTable;')
+            self.sapp_database.commit()
             self.sapp_cursor.execute('UPDATE StatsTable SET logins = 0;')
             self.sapp_database.commit()
             self.sapp_cursor.execute('UPDATE StatsTable SET messages = 0;')
