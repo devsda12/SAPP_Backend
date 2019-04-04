@@ -15,6 +15,9 @@ class flask_Main:
         #Defining the dictionary for binding account ID's to device ID's
         self.idBindDict = {}
 
+        #Defining dictionary for storing acc_Id's where firebase requests went wrong
+        self.pendingFirebaseRequests = {}
+
     #The main run function that runs when the program is started
     def run(self):
 
@@ -74,6 +77,11 @@ class flask_Main:
                         self.idBindDict[requestdevice_id][1] = requestfirebase_token
                         print("Firebase Token: " + requestfirebase_token)
                         print("UpdateFirebaseTokenPrint: " + str(self.idBindDict))
+
+                        #Now checking if there was an previous unsuccesful push for a new message
+                        if requestaccount_id in self.pendingFirebaseRequests:
+                            for conv in self.pendingFirebaseRequests[requestaccount_id]:
+                                firebase_Handler.firebase_Handler().sendRefreshRequest(requestfirebase_token, conv)
 
 
                         return '{insertedToken:"' + requestfirebase_token + '"}'
@@ -266,8 +274,17 @@ class flask_Main:
                                 if targetedId == self.idBindDict[item][0]:
                                     targetedFirebaseId = self.idBindDict[item][1]
 
-                                    #Now calling the firebase handler
-                                    firebase_Handler.firebase_Handler().sendRefreshRequest(targetedFirebaseId, requestContent["conv_Id"])
+                                    #Now calling the firebase handler and if unsuccesful adding the details to the pendingFirebaseRequests dict
+                                    try:
+                                        firebase_Handler.firebase_Handler().sendRefreshRequest(targetedFirebaseId, requestContent["conv_Id"])
+                                    except:
+                                        print("AddMessage Print: Firebase handler caused exception, storing the targeted acc_Id in dict")
+                                        if targetedId in self.pendingFirebaseRequests:
+                                            if requestContent["conv_Id"] not in self.pendingFirebaseRequests[targetedId]:
+                                                self.pendingFirebaseRequests[targetedId].append(requestContent["conv_Id"])
+                                        else:
+                                            self.pendingFirebaseRequests[targetedId] = [requestContent["conv_Id"]]
+
 
                             database_Handlers.database_Handlers().addStat('messages')
                             return '{insertResult:"true"}'
