@@ -298,7 +298,7 @@ class database_Handlers:
         for item in result:
             tempDict[item[3]] = [item[0], item[1]]
 
-        self.sapp_cursor.execute('SELECT * FROM StatsTable;')
+        self.sapp_cursor.execute('SELECT * FROM StatsTableOld;')
         result = self.sapp_cursor.fetchall()
         for item in result:
             tempDict[item[3] + "Old"] = [item[0], item[1]]
