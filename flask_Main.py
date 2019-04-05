@@ -333,7 +333,7 @@ class flask_Main:
                         result = database_Handlers.database_Handlers().changePass(requestContent)
 
                         if result:
-                            return True
+                            return '{insertResult:"true"}'
 
             else:
                 return "unsuccessful"
