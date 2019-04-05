@@ -320,23 +320,42 @@ class flask_Main:
             else:
                 return "unsuccessful"
 
-            # Request the statistical data from the database handler and send it to the application
-            @self.flaskApp.route("/sapp_changePass", methods=["POST"])
-            def sapp_changePass():
-                if request.is_json:
-                    requestContent = request.get_json()
-                    requestdevice_id = requestContent[0]["device_Id"]
-                    requestaccount_id = requestContent[0]["acc_Id"]
+        # Function to change the users password
+        @self.flaskApp.route("/sapp_changePass", methods=["POST"])
+        def sapp_changePass():
+            if request.is_json:
+                requestContent = request.get_json()
+                requestdevice_id = requestContent[0]["device_Id"]
+                requestaccount_id = requestContent[0]["acc_Id"]
 
-                    if requestdevice_id in self.idBindDict:
-                        if requestaccount_id == self.idBindDict[requestdevice_id][0]:
-                            result = database_Handlers.database_Handlers().changePass(requestContent)
+                if requestdevice_id in self.idBindDict:
+                    if requestaccount_id == self.idBindDict[requestdevice_id][0]:
+                        result = database_Handlers.database_Handlers().changePass(requestContent)
 
-                            if result:
-                                return True
+                        if result:
+                            return True
 
-                else:
-                    return "unsuccessful"
+            else:
+                return "unsuccessful"
+
+
+        #Function to change the users profile picture
+        @self.flaskApp.route("/sapp_changeProfilePic", methods=["POST"])
+        def sapp_changeProfilePic():
+            if request.is_json:
+                requestContent = request.get_json()
+                requestdevice_id = requestContent["device_Id"]
+                requestacctount_id = requestContent["acc_Id"]
+
+                if requestdevice_id in self.idBindDict:
+                    if requestacctount_id == self.idBindDict[requestdevice_id][0]:
+                        print("Change profile pic print: Now starting the database handler to update the profile picture")
+                        insertresult = database_Handlers.database_Handlers().changeProfilePic(requestContent)
+
+                        if insertresult:
+                            return '{insertResult:"true"}'
+            return "unsuccessful"
+
 
         #For now defined here, this could be changed in the future if needed. Caused errors in the init function of the firebase handler
         creds = credentials.Certificate("/home/back-end/sapp-firebase-notifications-firebase-adminsdk-bcjvu-cdca8ff155.json")

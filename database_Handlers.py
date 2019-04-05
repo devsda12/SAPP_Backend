@@ -353,6 +353,34 @@ class database_Handlers:
         return True
 
 
+    #Adding or changing a profile picture in the database
+    def changeProfilePic(self, requestContent):
+        requestNewProfilePic = requestContent["newProfilePicBinary"]
+        requestaccount_id = requestContent["acc_Id"]
+
+        #First updating the profile picture in the Acc_Table
+        print("Change profile pic print: " + 'UPDATE Acc_Table SET acc_ProfilePicture = ' + requestNewProfilePic + ' WHERE acc_Id = "' + requestaccount_id + '";')
+        self.sapp_cursor.execute('UPDATE Acc_Table SET acc_ProfilePicture = %s WHERE acc_Id = "' + requestaccount_id + '";', (requestNewProfilePic))
+        self.sapp_database.commit()
+
+        #Now searching for which id's the updated image needs to be set to 1
+        self.sapp_cursor.execute('SELECT conv_Id from Conv_Table;')
+        result = self.sapp_cursor.fetchall()
+
+        print("Change profile pic database handler print: Now iterating over the conv_Ids to determine if the conv_ProfilePicChanged value should be changed")
+        # Determine if requested acc_Id in one of the id's so the profilepicture changed can be updated
+        for item in result:
+            tempSplitList = [item[0][i:i + 10] for i in range(0, len(item[0]), 10)]
+            for index, tenPart in enumerate(tempSplitList):
+                # Als een van de gedeelten van 10 chars overeenkomt met het gegeven acc_Id
+                if tenPart == requestaccount_id:
+                    self.sapp_cursor.execute('UPDATE Conv_Table SET conv_ProfilePicChanged = 1 WHERE conv_Id = %s;', (item[0]))
+                    self.sapp_database.commit()
+
+        #Returning true if everything has gone smooth
+        return True
+
+
     # NON-database functions
 
     #Function to generate 10 digit ID
