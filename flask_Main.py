@@ -319,6 +319,23 @@ class flask_Main:
             else:
                 return "unsuccessful"
 
+            # Request the statistical data from the database handler and send it to the application
+            @self.flaskApp.route("/sapp_changePass", methods=["POST"])
+            def sapp_changePass():
+                if request.is_json:
+                    requestContent = request.get_json()
+                    requestdevice_id = requestContent[0]["device_Id"]
+                    requestaccount_id = requestContent[0]["acc_Id"]
+
+                    if requestdevice_id in self.idBindDict:
+                        if requestaccount_id == self.idBindDict[requestdevice_id][0]:
+                            result = database_Handlers.database_Handlers().changePass(requestContent)
+
+                            if result:
+                                return True
+
+                else:
+                    return "unsuccessful"
 
         #For now defined here, this could be changed in the future if needed. Caused errors in the init function of the firebase handler
         creds = credentials.Certificate("/home/back-end/sapp-firebase-notifications-firebase-adminsdk-bcjvu-cdca8ff155.json")

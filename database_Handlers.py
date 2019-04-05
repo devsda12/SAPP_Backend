@@ -337,6 +337,22 @@ class database_Handlers:
         self.sapp_database.commit()
 
 
+    # changing password in database
+    def changePass(self, requestContent):
+        requestNewPass = requestContent["acc_NewPassword"]
+        requestaccount_id = requestContent["acc_Id"]
+        requestedPassword = requestContent["acc_Password"]
+
+        self.sapp_cursor.execute('SELECT acc_Password FROM Acc_Table WHERE acc_Id = "' + requestaccount_id + '";')
+        result = self.sapp_cursor.fetchone()
+
+        if str(result[0]) == str(requestedPassword):
+            self.sapp_cursor.execute('UPDATE Acc_Table SET acc_Password = "' + requestNewPass + '" WHERE acc_Id = "' + requestaccount_id + '";')
+            self.sapp_database.commit()
+
+        return True
+
+
     # NON-database functions
 
     #Function to generate 10 digit ID
