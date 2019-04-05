@@ -374,7 +374,7 @@ class database_Handlers:
             for index, tenPart in enumerate(tempSplitList):
                 # Als een van de gedeelten van 10 chars overeenkomt met het gegeven acc_Id
                 if tenPart == requestaccount_id:
-                    self.sapp_cursor.execute('UPDATE Conv_Table SET conv_ProfilePicChanged = 1 WHERE conv_Id = %s;', (item[0]))
+                    self.sapp_cursor.execute('UPDATE Conv_Table SET conv_ProfilePicId = %s WHERE conv_Id = %s;', (self.id_generator(), item[0]))
                     self.sapp_database.commit()
 
         #Returning true if everything has gone smooth
