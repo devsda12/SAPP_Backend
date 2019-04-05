@@ -349,8 +349,10 @@ class database_Handlers:
         if str(result[0]) == str(requestedPassword):
             self.sapp_cursor.execute('UPDATE Acc_Table SET acc_Password = "' + requestNewPass + '" WHERE acc_Id = "' + requestaccount_id + '";')
             self.sapp_database.commit()
+            return True
+        else:
+            return False
 
-        return True
 
 
     #Adding or changing a profile picture in the database
