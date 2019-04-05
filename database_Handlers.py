@@ -345,6 +345,8 @@ class database_Handlers:
 
         self.sapp_cursor.execute('SELECT acc_Password FROM Acc_Table WHERE acc_Id = "' + requestaccount_id + '";')
         result = self.sapp_cursor.fetchone()
+        print(result[0])
+        print(requestNewPass, requestaccount_id, requestedPassword)
 
         if str(result[0]) == str(requestedPassword):
             self.sapp_cursor.execute('UPDATE Acc_Table SET acc_Password = "' + requestNewPass + '" WHERE acc_Id = "' + requestaccount_id + '";')
