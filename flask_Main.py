@@ -82,6 +82,7 @@ class flask_Main:
                         if requestaccount_id in self.pendingFirebaseRequests:
                             for conv in self.pendingFirebaseRequests[requestaccount_id]:
                                 firebase_Handler.firebase_Handler().sendRefreshRequest(requestfirebase_token, conv)
+                            del self.pendingFirebaseRequests[requestaccount_id]
 
 
                         return '{insertedToken:"' + requestfirebase_token + '"}'
