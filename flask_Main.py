@@ -345,13 +345,15 @@ class flask_Main:
                 requestdevice_id = requestContent["device_Id"]
                 requestacctount_id = requestContent["acc_Id"]
 
-                if requestdevice_id in self.idBindDict:
-                    if requestacctount_id == self.idBindDict[requestdevice_id][0]:
-                        print("Change profile pic print: Now starting the database handler to update the profile picture")
-                        insertresult = database_Handlers.database_Handlers().changeProfilePic(requestContent)
+                if "newProfilePic" in request.files:
+                    if requestdevice_id in self.idBindDict:
+                        if requestacctount_id == self.idBindDict[requestdevice_id][0]:
+                            print("Change profile pic print: Now starting the database handler to update the profile picture")
+                            insertresult = database_Handlers.database_Handlers().changeProfilePic(requestContent)
 
-                        if insertresult:
-                            return '{insertResult:"true"}'
+                            if insertresult:
+                                return '{insertResult:"true"}'
+
             return "unsuccessful"
 
 

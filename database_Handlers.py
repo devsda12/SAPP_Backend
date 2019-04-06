@@ -425,9 +425,9 @@ class database_Handlers:
 
 
     #Adding or changing a profile picture in the database
-    def changeProfilePic(self, requestContent):
-        requestNewProfilePic = requestContent["newProfilePicBinary"]
-        requestaccount_id = requestContent["acc_Id"]
+    def changeProfilePic(self, insertDict):
+        requestNewProfilePic = insertDict["newProfilePicBinary"]
+        requestaccount_id = insertDict["acc_Id"]
 
         #First updating the profile picture in the Acc_Table
         print("Change profile pic print: " + 'UPDATE Acc_Table SET acc_ProfilePicture = ' + requestNewProfilePic + ' WHERE acc_Id = "' + requestaccount_id + '";')
