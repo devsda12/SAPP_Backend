@@ -168,15 +168,19 @@ class database_Handlers:
         chatsDict = {}
         requestedAccId = requestContent[0]["acc_Id"]
 
-        #Now the requestContent contains all present Conv_Id's in the app and corresponding profile pic id's we need to iterate over it, but skip the first item because this is where the acc and device id are stored
-        iterContent = iter(requestContent)
-        next(iterContent)
-        for content in iterContent:
-            currentConvId = content["conv_Id"]
-            currentProfilePictureId = content["profilePic_Id"]
+        # Getting all conv_id's from the conv_Table for iteration
+        self.sapp_cursor.execute('SELECT conv_Id from Conv_Table;')
+        result = self.sapp_cursor.fetchall()
 
-            #First getting the partner ID to fetch the necessary information, and checking if it is a group or single chat
-            tempSplitList = [currentConvId[i:i + 10] for i in range(0, len(currentConvId), 10)]
+        # Determine if requested acc_Id in one of the id's (NEW VERSION)
+        for item in result:
+            brokenFromInnerLoop = False
+
+            # Now the requestContent contains all present Conv_Id's in the app and corresponding profile pic id's we need to iterate over it, but skip the first item because this is where the acc and device id are stored
+            iterContent = iter(requestContent)
+            next(iterContent)
+
+            tempSplitList = [item[0][i:i + 10] for i in range(0, len(item[0]), 10)]
             for index, tenPart in enumerate(tempSplitList):
                 # Als een van de gedeelten van 10 chars overeenkomt met het gegeven acc_Id
                 if tenPart == requestedAccId:
@@ -191,65 +195,32 @@ class database_Handlers:
                         # Nu wordt de partner informatie opgehaald van de db
                         self.sapp_cursor.execute('SELECT acc_Username, acc_ProfilePictureId FROM Acc_Table WHERE acc_Id = "' + tempPartnerId + '";')
                         partnerResult = self.sapp_cursor.fetchall()
-
-                        # Nu wordt de overige informatie van het gesprek uit de db gehaald
-                        self.sapp_cursor.execute('SELECT conv_LastMessage, conv_LastMessageSender, conv_LastMessageDate FROM Conv_Table WHERE conv_Id = "' + currentConvId + '";')
-                        detailsResult = self.sapp_cursor.fetchall()
-
-                        if partnerResult[0][1] != currentProfilePictureId:
-                            #Getting the new profile picture
-                            self.sapp_cursor.execute("SELECT acc_ProfilePicture FROM Acc_Table WHERE acc_Id = %s;", (tempPartnerId))
-                            pictureResult = self.sapp_cursor.fetchone()
-
-                            # Writing all the information to the dictionary in format dic[tablename] = [partner_Id, partner_Username, lastMessage, messageSender, messageDate, newProfilePicture, newProfilePicture]
-                            chatsDict[currentConvId] = [tempPartnerId, partnerResult[0][0], detailsResult[0][0], detailsResult[0][1], detailsResult[0][2], pictureResult[0], partnerResult[0][1]]
-                        else:
-                            # Writing all the information to the dictionary in format dic[tablename] = [partner_Id, partner_Username, lastMessage, messageSender, messageDate, newProfilePicture, newProfilePicture]
-                            chatsDict[currentConvId] = [tempPartnerId, partnerResult[0][0], detailsResult[0][0], detailsResult[0][1], detailsResult[0][2], "null", "null"]
                     else:
                         doSomethingToFetchGroupConversationInfo = ""
 
-        #Now that all info has been gained on the known tables, running through all tables to check for new tables
-        # Getting all conv_id's from the conv_Table
-        self.sapp_cursor.execute('SELECT conv_Id from Conv_Table;')
-        result = self.sapp_cursor.fetchall()
+                    # Nu wordt de overige informatie van het gesprek uit de db gehaald
+                    self.sapp_cursor.execute('SELECT conv_LastMessage, conv_LastMessageSender, conv_LastMessageDate FROM Conv_Table WHERE conv_Id = "' + item[0] + '";')
+                    detailsResult = self.sapp_cursor.fetchall()
 
-        # Determine if requested acc_Id in one of the id's (NEW VERSION)
-        for item in result:
-            if item[0] not in chatsDict:
-                tempSplitList = [item[0][i:i + 10] for i in range(0, len(item[0]), 10)]
-                for index, tenPart in enumerate(tempSplitList):
-                    # Als een van de gedeelten van 10 chars overeenkomt met het gegeven acc_Id
-                    if tenPart == requestedAccId:
-                        # Als de lengte van de totale lijst minder of gelijk is aan 2. Oftewel het is een gesprek tussen 2 personen
-                        if len(tempSplitList) <= 2:
-                            # Als het de eerste index is van de tempSplitList dan is de tweede de partner en andersom
-                            if index == 0:
-                                tempPartnerId = tempSplitList[1]
-                            else:
-                                tempPartnerId = tempSplitList[0]
+                    #First checking if the current conv id is present in the send conv_id's
+                    for content in iterContent:
+                        if item[0] == content["conv_Id"]:
+                            if partnerResult[0][1] != content["profilePic_Id"]:
+                                # Writing all the information to the dictionary in format dic[tablename] = [partner_Id, partner_Username, lastMessage, messageSender, messageDate, newProfilePictureId]
+                                chatsDict[item[0]] = [tempPartnerId, partnerResult[0][0], detailsResult[0][0], detailsResult[0][1], detailsResult[0][2], partnerResult[0][1]]
+                                brokenFromInnerLoop = True
+                                break
 
-                            # Nu wordt de partner informatie opgehaald van de db
-                            self.sapp_cursor.execute('SELECT acc_Username, acc_ProfilePictureId FROM Acc_Table WHERE acc_Id = "' + tempPartnerId + '";')
-                            partnerResult = self.sapp_cursor.fetchall()
-                        else:
-                            doSomethingToFetchGroupConversationInfo = ""
+                    if brokenFromInnerLoop:
+                        continue
 
-                        # Nu wordt de overige informatie van het gesprek uit de db gehaald
-                        self.sapp_cursor.execute('SELECT conv_LastMessage, conv_LastMessageSender, conv_LastMessageDate FROM Conv_Table WHERE conv_Id = "' + item[0] + '";')
-                        detailsResult = self.sapp_cursor.fetchall()
-
-                        #Under here checking if there is a custom image present
-                        if partnerResult[0][1] != None:
-                            # Getting the new profile picture
-                            self.sapp_cursor.execute("SELECT acc_ProfilePicture FROM Acc_Table WHERE acc_Id = %s;", (tempPartnerId))
-                            pictureResult = self.sapp_cursor.fetchone()
-
-                            # Writing all the information to the dictionary in format dic[tablename] = [partner_Id, partner_Username, lastMessage, messageSender, messageDate, newProfilePicture, newProfilePicture]
-                            chatsDict[item[0]] = [tempPartnerId, partnerResult[0][0], detailsResult[0][0], detailsResult[0][1], detailsResult[0][2], pictureResult[0], partnerResult[0][1]]
-                        else:
-                            # Writing all the information to the dictionary in format dic[tablename] = [partner_Id, partner_Username, lastMessage, messageSender, messageDate, newProfilePicture, newProfilePicture]
-                            chatsDict[item[0]] = [tempPartnerId, partnerResult[0][0], detailsResult[0][0], detailsResult[0][1], detailsResult[0][2], "null", "null"]
+                    #Under here checking if there is a custom image present
+                    if partnerResult[0][1] != None:
+                        # Writing all the information to the dictionary in format dic[tablename] = [partner_Id, partner_Username, lastMessage, messageSender, messageDate, newProfilePictureId]
+                        chatsDict[item[0]] = [tempPartnerId, partnerResult[0][0], detailsResult[0][0], detailsResult[0][1], detailsResult[0][2], partnerResult[0][1]]
+                    else:
+                        # Writing all the information to the dictionary in format dic[tablename] = [partner_Id, partner_Username, lastMessage, messageSender, messageDate, newProfilePictureId]
+                        chatsDict[item[0]] = [tempPartnerId, partnerResult[0][0], detailsResult[0][0], detailsResult[0][1], detailsResult[0][2], "null"]
 
         # Checking whether the dict is empty
         if len(chatsDict) == 0:
