@@ -168,6 +168,29 @@ class database_Handlers:
         chatsDict = {}
         requestedAccId = requestContent[0]["acc_Id"]
 
+        #Now the requestContent contains all present Conv_Id's in the app and corresponding profile pic id's we need to iterate over it, but skip the first item because this is where the acc and device id are stored
+        iterContent = iter(requestContent)
+        next(iterContent)
+        for content in iterContent:
+            currentConvId = content["conv_Id"]
+            currentProfilePictureId = content["profilePic_Id"]
+
+            #First getting the partner ID to fetch the necessary information, and checking if it is a group or single chat
+            tempSplitList = [currentConvId[i:i + 10] for i in range(0, len(currentConvId), 10)]
+            for index, tenPart in enumerate(tempSplitList):
+                # Als een van de gedeelten van 10 chars overeenkomt met het gegeven acc_Id
+                if tenPart == requestedAccId:
+                    # Als de lengte van de totale lijst minder of gelijk is aan 2. Oftewel het is een gesprek tussen 2 personen
+                    if len(tempSplitList) <= 2:
+                        # Als het de eerste index is van de tempSplitList dan is de tweede de partner en andersom
+                        if index == 0:
+                            tempPartnerId = tempSplitList[1]
+                        else:
+                            tempPartnerId = tempSplitList[0]
+                    else:
+                        doSomethingToFetchGroupConversationInfo = ""
+
+
         # Getting all conv_id's from the conv_Table
         self.sapp_cursor.execute('SELECT conv_Id from Conv_Table;')
         result = self.sapp_cursor.fetchall()
@@ -187,7 +210,7 @@ class database_Handlers:
                             tempPartnerId = tempSplitList[0]
 
                         # Nu wordt de partner informatie opgehaald van de db
-                        self.sapp_cursor.execute('SELECT acc_Username FROM Acc_Table WHERE acc_Id = "' + tempPartnerId + '";')
+                        self.sapp_cursor.execute('SELECT acc_Username, acc_ProfilePictureId FROM Acc_Table WHERE acc_Id = "' + tempPartnerId + '";')
                         partnerResult = self.sapp_cursor.fetchall()
                     else:
                         doSomethingToFetchGroupConversationInfo = ""
@@ -413,19 +436,10 @@ class database_Handlers:
         self.sapp_cursor.execute('UPDATE Acc_Table SET acc_ProfilePicture = %s WHERE acc_Id = "' + requestaccount_id + '";', (requestNewProfilePic))
         self.sapp_database.commit()
 
-        #Now searching for which id's the updated image needs to be set to 1
-        self.sapp_cursor.execute('SELECT conv_Id from Conv_Table;')
-        result = self.sapp_cursor.fetchall()
-
-        print("Change profile pic database handler print: Now iterating over the conv_Ids to determine if the conv_ProfilePicChanged value should be changed")
-        # Determine if requested acc_Id in one of the id's so the profilepicture changed can be updated
-        for item in result:
-            tempSplitList = [item[0][i:i + 10] for i in range(0, len(item[0]), 10)]
-            for index, tenPart in enumerate(tempSplitList):
-                # Als een van de gedeelten van 10 chars overeenkomt met het gegeven acc_Id
-                if tenPart == requestaccount_id:
-                    self.sapp_cursor.execute('UPDATE Conv_Table SET conv_ProfilePicId = %s WHERE conv_Id = %s;', (self.id_generator(), item[0]))
-                    self.sapp_database.commit()
+        #Now updating the profile picture ID in the acc_Table so other users know it has been updated
+        print("Change profile pic print: Now updating the profile picture ID in the acc_Table so other users know it has been updated")
+        self.sapp_cursor.execute('UPDATE Acc_Table SET acc_ProfilePictureId = %s WHERE acc_Id = "' + requestaccount_id + '";', (self.id_generator()))
+        self.sapp_database.commit()
 
         #Returning true if everything has gone smooth
         return True
