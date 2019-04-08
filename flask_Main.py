@@ -345,15 +345,9 @@ class flask_Main:
                 print("Change profile pic print: There was no profile picture send")
                 return "Upload unsuccessful"
 
-            print("Before in idbindict: " + str(self.idBindDict))
-            print("Before in idbindict: " + str(request.form.get("acc_Id")))
-            print("Before in idbindict: " + str(request.form.get("device_Id")))
-
             #Checking the device and acc id
             if str(request.form.get("device_Id")) in self.idBindDict:
-                print("After in idbindict: " + str(self.idBindDict))
-                print("After in idbindict: " + str(request.form.get("acc_Id")))
-                if str(request.form.get("acc_Id")) == self.idBindDict[str(request.form.get("device_Id"))]:
+                if str(request.form.get("acc_Id")) == self.idBindDict[str(request.form.get("device_Id"))][0]:
                     profile_Pic = request.files["profilePic"]
                     profile_PicBytes = profile_Pic.read()
                     insertResult = database_Handlers.database_Handlers().changeProfilePic(profile_PicBytes, str(request.form.get("acc_Id")))
