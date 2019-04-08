@@ -425,18 +425,16 @@ class database_Handlers:
 
 
     #Adding or changing a profile picture in the database
-    def changeProfilePic(self, insertDict):
-        requestNewProfilePic = insertDict["newProfilePicBinary"]
-        requestaccount_id = insertDict["acc_Id"]
+    def changeProfilePic(self, profilePicBytes, acc_Id):
 
         #First updating the profile picture in the Acc_Table
-        print("Change profile pic print: " + 'UPDATE Acc_Table SET acc_ProfilePicture = ' + requestNewProfilePic + ' WHERE acc_Id = "' + requestaccount_id + '";')
-        self.sapp_cursor.execute('UPDATE Acc_Table SET acc_ProfilePicture = %s WHERE acc_Id = "' + requestaccount_id + '";', (requestNewProfilePic))
+        print("Change profile pic print: " + 'UPDATE Acc_Table SET acc_ProfilePicture = ' + profilePicBytes + ' WHERE acc_Id = "' + acc_Id + '";')
+        self.sapp_cursor.execute('UPDATE Acc_Table SET acc_ProfilePicture = %s WHERE acc_Id = "' + acc_Id + '";', (profilePicBytes))
         self.sapp_database.commit()
 
         #Now updating the profile picture ID in the acc_Table so other users know it has been updated
         print("Change profile pic print: Now updating the profile picture ID in the acc_Table so other users know it has been updated")
-        self.sapp_cursor.execute('UPDATE Acc_Table SET acc_ProfilePictureId = %s WHERE acc_Id = "' + requestaccount_id + '";', (self.id_generator()))
+        self.sapp_cursor.execute('UPDATE Acc_Table SET acc_ProfilePictureId = %s WHERE acc_Id = "' + acc_Id + '";', (self.id_generator()))
         self.sapp_database.commit()
 
         #Returning true if everything has gone smooth
