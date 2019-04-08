@@ -346,11 +346,11 @@ class flask_Main:
                 return "Upload unsuccessful"
 
             #Checking the device and acc id
-            if request.form.get("device_Id") in self.idBindDict:
-                if request.form.get("acc_Id") == self.idBindDict[request.form.get("device_Id")]:
+            if str(request.form.get("device_Id")) in self.idBindDict:
+                if str(request.form.get("acc_Id")) == self.idBindDict[str(request.form.get("device_Id"))]:
                     profile_Pic = request.files["profilePic"]
                     profile_PicBytes = profile_Pic.read()
-                    insertResult = database_Handlers.database_Handlers().changeProfilePic(profile_PicBytes, request.form.get("acc_Id"))
+                    insertResult = database_Handlers.database_Handlers().changeProfilePic(profile_PicBytes, str(request.form.get("acc_Id")))
 
                     if not insertResult:
                         return "Upload unsuccessful"
