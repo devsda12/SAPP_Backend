@@ -429,7 +429,8 @@ class database_Handlers:
 
         #First updating the profile picture in the Acc_Table
         #print("Change profile pic print: " + 'UPDATE Acc_Table SET acc_ProfilePicture = ' + profilePicBytes + ' WHERE acc_Id = "' + acc_Id + '";')
-        self.sapp_cursor.execute('UPDATE Acc_Table SET acc_ProfilePicture = %s WHERE acc_Id = "' + acc_Id + '";', (profilePicBytes))
+        updateStatement1 = "UPDATE Acc_Table SET acc_ProfilePicture = %s WHERE acc_Id = %s;"
+        self.sapp_cursor.execute(updateStatement1, (profilePicBytes, acc_Id))
         self.sapp_database.commit()
 
         #Now updating the profile picture ID in the acc_Table so other users know it has been updated
