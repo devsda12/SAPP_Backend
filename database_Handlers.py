@@ -435,7 +435,7 @@ class database_Handlers:
 
         #Now updating the profile picture ID in the acc_Table so other users know it has been updated
         print("Change profile pic print: Now updating the profile picture ID in the acc_Table so other users know it has been updated")
-        self.sapp_cursor.execute('UPDATE Acc_Table SET acc_ProfilePictureId = %s WHERE acc_Id = "' + acc_Id + '";', (self.id_generator()))
+        self.sapp_cursor.execute('UPDATE Acc_Table SET acc_ProfilePictureId = %s WHERE acc_Id = %s;', (self.id_generator(), acc_Id))
         self.sapp_database.commit()
 
         #Returning true if everything has gone smooth
