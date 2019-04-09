@@ -333,8 +333,7 @@ class flask_Main:
                         database_Handlers.database_Handlers().changePass(requestContent)
                         return '{insertResult:"true"}'
 
-            else:
-                return "unsuccessful"
+            return "unsuccessful"
 
 
         #Function to change the users profile picture
