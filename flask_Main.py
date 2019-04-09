@@ -339,19 +339,25 @@ class flask_Main:
         #Function to change the users profile picture
         @self.flaskApp.route("/sapp_changeProfilePic", methods=["POST"])
         def sapp_changeProfilePic():
-            if request.is_json:
-                requestContent = request.get_json()
-                requestdevice_id = requestContent["device_Id"]
-                requestacctount_id = requestContent["acc_Id"]
+            #Checking if the new profile picture is present in the files
+            if "profilePic" not in request.files:
+                print("Change profile pic print: There was no profile picture send")
+                return "Upload unsuccessful"
 
-                if requestdevice_id in self.idBindDict:
-                    if requestacctount_id == self.idBindDict[requestdevice_id][0]:
-                        print("Change profile pic print: Now starting the database handler to update the profile picture")
-                        insertresult = database_Handlers.database_Handlers().changeProfilePic(requestContent)
+            #Checking the device and acc id
+            if str(request.form.get("device_Id")) in self.idBindDict:
+                if str(request.form.get("acc_Id")) == self.idBindDict[str(request.form.get("device_Id"))][0]:
+                    profile_Pic = request.files["profilePic"]
+                    profile_PicBytes = profile_Pic.read()
+                    insertResult = database_Handlers.database_Handlers().changeProfilePic(profile_PicBytes, str(request.form.get("acc_Id")))
 
-                        if insertresult:
-                            return '{insertResult:"true"}'
-            return "unsuccessful"
+                    if not insertResult:
+                        return "Upload unsuccessful"
+                    else:
+                        return "Upload successful"
+
+            print("Change profile pic print: User not logged in")
+            return "Upload unsuccessful"
 
 
         #For now defined here, this could be changed in the future if needed. Caused errors in the init function of the firebase handler

@@ -168,12 +168,18 @@ class database_Handlers:
         chatsDict = {}
         requestedAccId = requestContent[0]["acc_Id"]
 
-        # Getting all conv_id's from the conv_Table
+        # Getting all conv_id's from the conv_Table for iteration
         self.sapp_cursor.execute('SELECT conv_Id from Conv_Table;')
         result = self.sapp_cursor.fetchall()
 
         # Determine if requested acc_Id in one of the id's (NEW VERSION)
         for item in result:
+            brokenFromInnerLoop = False
+
+            # Now the requestContent contains all present Conv_Id's in the app and corresponding profile pic id's we need to iterate over it, but skip the first item because this is where the acc and device id are stored
+            iterContent = iter(requestContent)
+            next(iterContent)
+
             tempSplitList = [item[0][i:i + 10] for i in range(0, len(item[0]), 10)]
             for index, tenPart in enumerate(tempSplitList):
                 # Als een van de gedeelten van 10 chars overeenkomt met het gegeven acc_Id
@@ -187,7 +193,7 @@ class database_Handlers:
                             tempPartnerId = tempSplitList[0]
 
                         # Nu wordt de partner informatie opgehaald van de db
-                        self.sapp_cursor.execute('SELECT acc_Username FROM Acc_Table WHERE acc_Id = "' + tempPartnerId + '";')
+                        self.sapp_cursor.execute('SELECT acc_Username, acc_ProfilePictureId FROM Acc_Table WHERE acc_Id = "' + tempPartnerId + '";')
                         partnerResult = self.sapp_cursor.fetchall()
                     else:
                         doSomethingToFetchGroupConversationInfo = ""
@@ -196,10 +202,25 @@ class database_Handlers:
                     self.sapp_cursor.execute('SELECT conv_LastMessage, conv_LastMessageSender, conv_LastMessageDate FROM Conv_Table WHERE conv_Id = "' + item[0] + '";')
                     detailsResult = self.sapp_cursor.fetchall()
 
-                    #Under here checking if the image ids match
+                    #First checking if the current conv id is present in the send conv_id's
+                    for content in iterContent:
+                        if item[0] == content["conv_Id"]:
+                            if partnerResult[0][1] != content["profilePic_Id"]:
+                                # Writing all the information to the dictionary in format dic[tablename] = [partner_Id, partner_Username, lastMessage, messageSender, messageDate, newProfilePictureId]
+                                chatsDict[item[0]] = [tempPartnerId, partnerResult[0][0], detailsResult[0][0], detailsResult[0][1], detailsResult[0][2], partnerResult[0][1]]
+                                brokenFromInnerLoop = True
+                                break
 
-                    # Writing all the information to the dictionary in format dic[tablename] = [partner_Id, partner_Username, lastMessage, messageSender, messageDate]
-                    chatsDict[item[0]] = [tempPartnerId, partnerResult[0][0], detailsResult[0][0], detailsResult[0][1], detailsResult[0][2]]
+                    if brokenFromInnerLoop:
+                        continue
+
+                    #Under here checking if there is a custom image present
+                    if partnerResult[0][1] != None:
+                        # Writing all the information to the dictionary in format dic[tablename] = [partner_Id, partner_Username, lastMessage, messageSender, messageDate, newProfilePictureId]
+                        chatsDict[item[0]] = [tempPartnerId, partnerResult[0][0], detailsResult[0][0], detailsResult[0][1], detailsResult[0][2], partnerResult[0][1]]
+                    else:
+                        # Writing all the information to the dictionary in format dic[tablename] = [partner_Id, partner_Username, lastMessage, messageSender, messageDate, newProfilePictureId]
+                        chatsDict[item[0]] = [tempPartnerId, partnerResult[0][0], detailsResult[0][0], detailsResult[0][1], detailsResult[0][2], "null"]
 
         # Checking whether the dict is empty
         if len(chatsDict) == 0:
@@ -404,28 +425,18 @@ class database_Handlers:
 
 
     #Adding or changing a profile picture in the database
-    def changeProfilePic(self, requestContent):
-        requestNewProfilePic = requestContent["newProfilePicBinary"]
-        requestaccount_id = requestContent["acc_Id"]
+    def changeProfilePic(self, profilePicBytes, acc_Id):
 
         #First updating the profile picture in the Acc_Table
-        print("Change profile pic print: " + 'UPDATE Acc_Table SET acc_ProfilePicture = ' + requestNewProfilePic + ' WHERE acc_Id = "' + requestaccount_id + '";')
-        self.sapp_cursor.execute('UPDATE Acc_Table SET acc_ProfilePicture = %s WHERE acc_Id = "' + requestaccount_id + '";', (requestNewProfilePic))
+        #print("Change profile pic print: " + 'UPDATE Acc_Table SET acc_ProfilePicture = ' + profilePicBytes + ' WHERE acc_Id = "' + acc_Id + '";')
+        updateStatement1 = "UPDATE Acc_Table SET acc_ProfilePicture = %s WHERE acc_Id = %s;"
+        self.sapp_cursor.execute(updateStatement1, (profilePicBytes, acc_Id))
         self.sapp_database.commit()
 
-        #Now searching for which id's the updated image needs to be set to 1
-        self.sapp_cursor.execute('SELECT conv_Id from Conv_Table;')
-        result = self.sapp_cursor.fetchall()
-
-        print("Change profile pic database handler print: Now iterating over the conv_Ids to determine if the conv_ProfilePicChanged value should be changed")
-        # Determine if requested acc_Id in one of the id's so the profilepicture changed can be updated
-        for item in result:
-            tempSplitList = [item[0][i:i + 10] for i in range(0, len(item[0]), 10)]
-            for index, tenPart in enumerate(tempSplitList):
-                # Als een van de gedeelten van 10 chars overeenkomt met het gegeven acc_Id
-                if tenPart == requestaccount_id:
-                    self.sapp_cursor.execute('UPDATE Conv_Table SET conv_ProfilePicId = %s WHERE conv_Id = %s;', (self.id_generator(), item[0]))
-                    self.sapp_database.commit()
+        #Now updating the profile picture ID in the acc_Table so other users know it has been updated
+        print("Change profile pic print: Now updating the profile picture ID in the acc_Table so other users know it has been updated")
+        self.sapp_cursor.execute('UPDATE Acc_Table SET acc_ProfilePictureId = %s WHERE acc_Id = %s;', (self.id_generator(), acc_Id))
+        self.sapp_database.commit()
 
         #Returning true if everything has gone smooth
         return True
