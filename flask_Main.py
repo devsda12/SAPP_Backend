@@ -330,9 +330,10 @@ class flask_Main:
 
                 if requestdevice_id in self.idBindDict:
                     if requestaccount_id == self.idBindDict[requestdevice_id][0]:
-                        database_Handlers.database_Handlers().changePass(requestContent)
-                        print("it works")
-                        return '{insertResult:"true"}'
+                        result = database_Handlers.database_Handlers().changePass(requestContent)
+                        if result:
+                            print("it works")
+                            return '{insertResult:"true"}'
             print("it doesnt work")
             return "unsuccessful"
 
