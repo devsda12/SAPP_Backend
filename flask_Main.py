@@ -329,7 +329,7 @@ class flask_Main:
                 requestaccount_id = requestContent["acc_Id"]
 
                 if requestdevice_id in self.idBindDict:
-                    if requestaccount_id == self.idBindDict[requestdevice_id]:
+                    if requestaccount_id == self.idBindDict[requestdevice_id][0]:
                         database_Handlers.database_Handlers().changePass(requestContent)
                         print("it works")
                         return '{insertResult:"true"}'
