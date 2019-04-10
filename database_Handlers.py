@@ -178,6 +178,7 @@ class database_Handlers:
 
             # Now the requestContent contains all present Conv_Id's in the app and corresponding profile pic id's we need to iterate over it, but skip the first item because this is where the acc and device id are stored
             iterContent = iter(requestContent)
+            print(iterContent)
             next(iterContent)
 
             tempSplitList = [item[0][i:i + 10] for i in range(0, len(item[0]), 10)]
