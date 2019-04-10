@@ -123,6 +123,8 @@ class flask_Main:
                         returnstring = "["
                         for item in chatResult:
                             returnstring = returnstring + '{table_Name:"' + item + '", partner_Id:"' + str(chatResult[item][0]) + '", partner_Username:"' + str(chatResult[item][1]) + '", last_Message:"' + str(chatResult[item][2]) + '", message_Sender:"' + str(chatResult[item][3]) + '", message_Date:"' + str(chatResult[item][4]) + '", newProfilePictureId:"' + str(chatResult[item][5]) + '"},'
+                            if chatResult[item][5] != "null":
+                                self.profilePicsToBeRequested.append(chatResult[item][5])
                         returnstring = returnstring[:-1]
                         returnstring = returnstring + "]"
                         return returnstring
