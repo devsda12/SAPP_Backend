@@ -205,6 +205,7 @@ class database_Handlers:
 
                     #First checking if the current conv id is present in the send conv_id's
                     for content in iterContent:
+                        print(partnerResult[0][1])
                         print(content)
                         if item[0] == content["conv_Id"]:
                             if partnerResult[0][1] != content["profilePic_Id"]:
