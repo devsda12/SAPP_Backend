@@ -178,7 +178,6 @@ class database_Handlers:
 
             # Now the requestContent contains all present Conv_Id's in the app and corresponding profile pic id's we need to iterate over it, but skip the first item because this is where the acc and device id are stored
             iterContent = iter(requestContent)
-            print(requestContent)
             next(iterContent)
 
             tempSplitList = [item[0][i:i + 10] for i in range(0, len(item[0]), 10)]
@@ -205,8 +204,6 @@ class database_Handlers:
 
                     #First checking if the current conv id is present in the send conv_id's
                     for content in iterContent:
-                        print(partnerResult[0][1])
-                        print(content)
                         if item[0] == content["conv_Id"]:
                             if partnerResult[0][1] != content["profilePic_Id"] and partnerResult[0][1] != None:
                                 # Writing all the information to the dictionary in format dic[tablename] = [partner_Id, partner_Username, lastMessage, messageSender, messageDate, newProfilePictureId]
