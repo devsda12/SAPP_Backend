@@ -178,7 +178,7 @@ class database_Handlers:
 
             # Now the requestContent contains all present Conv_Id's in the app and corresponding profile pic id's we need to iterate over it, but skip the first item because this is where the acc and device id are stored
             iterContent = iter(requestContent)
-            print(iterContent)
+            print(requestContent)
             next(iterContent)
 
             tempSplitList = [item[0][i:i + 10] for i in range(0, len(item[0]), 10)]
@@ -234,7 +234,7 @@ class database_Handlers:
     #Function to fetch a requested profile picture from the database
     def fetchProfilePic(self, profilePicId):
         #First executing a query on the database
-        self.sapp_cursor.execute("SELECT acc_ProfilePicture FROM Acc_Table WHERE acc_ProfilePictureId = %s;", (profilePicId))
+        self.sapp_cursor.execute('SELECT acc_ProfilePicture FROM Acc_Table WHERE acc_ProfilePictureId = "' + profilePicId + '";')
         result = self.sapp_cursor.fetchone()
 
         #Now storing the actual bytes inside a variable
