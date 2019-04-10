@@ -213,6 +213,11 @@ class database_Handlers:
                                 chatsDict[item[0]] = [tempPartnerId, partnerResult[0][0], detailsResult[0][0], detailsResult[0][1], detailsResult[0][2], partnerResult[0][1]]
                                 brokenFromInnerLoop = True
                                 break
+                            else:
+                                # Writing all the information to the dictionary in format dic[tablename] = [partner_Id, partner_Username, lastMessage, messageSender, messageDate, newProfilePictureId]
+                                chatsDict[item[0]] = [tempPartnerId, partnerResult[0][0], detailsResult[0][0], detailsResult[0][1], detailsResult[0][2], "null"]
+                                brokenFromInnerLoop = True
+                                break
 
                     if brokenFromInnerLoop:
                         break
