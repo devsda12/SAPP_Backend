@@ -163,7 +163,7 @@ class database_Handlers:
             return chatsDict
 
 
-    # Requesting chats database function V3
+    # Requesting chats database function V4
     def getChatsV4(self, requestContent):
         chatsDict = {}
         requestedAccId = requestContent[0]["acc_Id"]
@@ -212,7 +212,7 @@ class database_Handlers:
                                 break
 
                     if brokenFromInnerLoop:
-                        continue
+                        break
 
                     #Under here checking if there is a custom image present
                     if partnerResult[0][1] != None:
@@ -227,6 +227,17 @@ class database_Handlers:
             return False
         else:
             return chatsDict
+
+
+    #Function to fetch a requested profile picture from the database
+    def fetchProfilePic(self, profilePicId):
+        #First executing a query on the database
+        self.sapp_cursor.execute("SELECT acc_ProfilePicture FROM Acc_Table WHERE acc_ProfilePictureId = %s;", (profilePicId))
+        result = self.sapp_cursor.fetchone()
+
+        #Now storing the actual bytes inside a variable
+        imageBytes = result[0]
+        return imageBytes
 
 
     # Searching for users in the database

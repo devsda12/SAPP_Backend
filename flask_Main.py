@@ -18,6 +18,9 @@ class flask_Main:
         #Defining dictionary for storing acc_Id's where firebase requests went wrong
         self.pendingFirebaseRequests = {}
 
+        #Defining a list to store profilepic id's that may be requested for a short period of time
+        self.profilePicsToBeRequested = []
+
     #The main run function that runs when the program is started
     def run(self):
 
@@ -119,13 +122,30 @@ class flask_Main:
 
                         returnstring = "["
                         for item in chatResult:
-                            returnstring = returnstring + '{table_Name:"' + item + '", partner_Id:"' + str(chatResult[item][0]) + '", partner_Username:"' + str(chatResult[item][1]) + '", last_Message:"' + str(chatResult[item][2]) + '", message_Sender:"' + str(chatResult[item][3]) + '", message_Date:"' + str(chatResult[item][4]) + '"},'
+                            returnstring = returnstring + '{table_Name:"' + item + '", partner_Id:"' + str(chatResult[item][0]) + '", partner_Username:"' + str(chatResult[item][1]) + '", last_Message:"' + str(chatResult[item][2]) + '", message_Sender:"' + str(chatResult[item][3]) + '", message_Date:"' + str(chatResult[item][4]) + '", newProfilePictureId:"' + str(chatResult[item][5]) + '"},'
                         returnstring = returnstring[:-1]
                         returnstring = returnstring + "]"
                         return returnstring
 
             #Returning string if one of the ifs did not execute
             return "Unsuccessful"
+
+
+        # Retrieve a needed profile picture from the database when it was enabled in getChats
+        @self.flaskApp.route("/sapp_getProfilePic/<profilePicId>", methods=["GET"])
+        def sapp_getProfilePic(profilePicId):
+            #First checking if the profilePicId is in the current list of profile pic id's that may be requested
+            if profilePicId in self.profilePicsToBeRequested:
+                #First removing it from the list
+                self.profilePicsToBeRequested.remove(profilePicId)
+
+                #Now calling a function in database handler to fetch the image from the database
+                imageBytes = database_Handlers.database_Handlers().fetchProfilePic(profilePicId)
+
+                return imageBytes
+
+            #The requested profile picture is not currently present
+            return "The requested profile picture is not currently present"
 
 
         # Searching for users
