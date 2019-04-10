@@ -294,6 +294,7 @@ class flask_Main:
 
             return "unsuccessful"
 
+
         # Request the statistical data from the database handler and send it to the application
         @self.flaskApp.route("/sapp_requestStats", methods=["POST"])
         def sapp_requestStats():
@@ -320,6 +321,7 @@ class flask_Main:
             else:
                 return "unsuccessful"
 
+
         # Function to change the users password
         @self.flaskApp.route("/sapp_changePass", methods=["POST"])
         def sapp_changePass():
@@ -336,7 +338,6 @@ class flask_Main:
                             return '{insertResult:"true"}'
             print("it doesnt work")
             return "unsuccessful"
-
 
 
         #Function to change the users profile picture
@@ -359,7 +360,7 @@ class flask_Main:
                     else:
                         return "Upload successful"
 
-            print("Change profile pic print: User not logged in")
+            print("Change profile pic print: User not logged in or inserting went wrong")
             return "Upload unsuccessful"
 
 
