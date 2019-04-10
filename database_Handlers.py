@@ -208,7 +208,7 @@ class database_Handlers:
                         print(partnerResult[0][1])
                         print(content)
                         if item[0] == content["conv_Id"]:
-                            if partnerResult[0][1] != content["profilePic_Id"]:
+                            if partnerResult[0][1] != content["profilePic_Id"] and partnerResult[0][1] != None:
                                 # Writing all the information to the dictionary in format dic[tablename] = [partner_Id, partner_Username, lastMessage, messageSender, messageDate, newProfilePictureId]
                                 chatsDict[item[0]] = [tempPartnerId, partnerResult[0][0], detailsResult[0][0], detailsResult[0][1], detailsResult[0][2], partnerResult[0][1]]
                                 brokenFromInnerLoop = True
