@@ -57,12 +57,12 @@ class database_Handlers:
         self.sapp_cursor.execute('SELECT acc_ProfilePictureId FROM Acc_Table WHERE acc_Id = "' + acc_Id + '";')
         result = self.sapp_cursor.fetchone()
 
-        if "profilePictureId" in requestContent:
+        if "profilePicId" in requestContent:
             print(result[0])
             print(type(result[0]))
-            print(requestContent["profilePictureId"])
-            print(type(requestContent["profilePictureId"]))
-            if result[0] != requestContent["profilePictureId"]:
+            print(requestContent["profilePicId"])
+            print(type(requestContent["profilePicId"]))
+            if result[0] != requestContent["profilePicId"]:
                 return result[0]
         else:
             return result[0]
