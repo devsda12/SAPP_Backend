@@ -62,6 +62,8 @@ class flask_Main:
 
                 database_Handlers.database_Handlers().addStat('logins')
 
+                print(newProfilePictureId)
+                print(type(newProfilePictureId))
                 if not newProfilePictureId or newProfilePictureId == None:
                     return '{acc_Id:"' + loginResult + '", profilePicId:"null"}'
                 else:
@@ -142,6 +144,7 @@ class flask_Main:
         # Retrieve a needed profile picture from the database when it was enabled in getChats
         @self.flaskApp.route("/sapp_getProfilePic/<profilePicId>", methods=["GET"])
         def sapp_getProfilePic(profilePicId):
+            print(self.profilePicsToBeRequested)
             #First checking if the profilePicId is in the current list of profile pic id's that may be requested
             if profilePicId in self.profilePicsToBeRequested:
                 #First removing it from the list
