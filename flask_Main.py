@@ -62,8 +62,6 @@ class flask_Main:
 
                 database_Handlers.database_Handlers().addStat('logins')
 
-                print(newProfilePictureId)
-                print(type(newProfilePictureId))
                 if not newProfilePictureId or newProfilePictureId == None:
                     return '{acc_Id:"' + loginResult + '", profilePicId:"null"}'
                 else:
