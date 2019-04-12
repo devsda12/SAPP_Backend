@@ -52,6 +52,20 @@ class database_Handlers:
             return requestedId
 
 
+    #The function that checks if the given profile picture ID is the newest
+    def checkProfilePictureIdAfterLogin(self, requestContent, acc_Id):
+        self.sapp_cursor.execute('SELECT acc_ProfilePictureId FROM Acc_Table WHERE acc_Id = "' + acc_Id + '";')
+        result = self.sapp_cursor.fetchone()
+
+        if "profilePictureId" in requestContent:
+            if result[0] != requestContent["profilePictureId"]:
+                return result[0]
+        else:
+            return result[0]
+
+        return False
+
+
     #The create account database function
     def create_Account(self, requestContent):
         requestedUsername = requestContent["acc_Username"]

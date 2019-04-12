@@ -50,17 +50,23 @@ class flask_Main:
                 if not loginResult:
                     return "Login Unsuccessful"
 
+                #Now corresponding the profile picture id's if this was send
+                newProfilePictureId = database_Handlers.database_Handlers().checkProfilePictureIdAfterLogin(requestContent, loginResult)
+
                 #If the login is succesful the account ID needs to be bound to the device ID for access
                 requestedDeviceId = requestContent["device_Id"]
-                if "device_FirebaseToken" in requestContent:
-                    requestedFirebaseToken = requestContent["device_FirebaseToken"]
-                    self.idBindDict[requestedDeviceId] = [loginResult, requestedFirebaseToken]
-                    print("LoginPrint: " + str(self.idBindDict))
-                else:
-                    self.idBindDict[requestedDeviceId] = [loginResult, 0]
-                    print("LoginPrint" + str(self.idBindDict))
+
+                requestedFirebaseToken = requestContent["device_FirebaseToken"]
+                self.idBindDict[requestedDeviceId] = [loginResult, requestedFirebaseToken]
+                print("LoginPrint: " + str(self.idBindDict))
+
                 database_Handlers.database_Handlers().addStat('logins')
-                return '{acc_Id:"' + loginResult + '"}'
+
+                if not newProfilePictureId or newProfilePictureId == None:
+                    return '{acc_Id:"' + loginResult + '", profilePicId:"null"}'
+                else:
+                    self.profilePicsToBeRequested.append(newProfilePictureId)
+                    return '{acc_Id:"' + loginResult + '", profilePicId:"' + newProfilePictureId + '"}'
             else:
                 return "Login Unsuccessful"
 
