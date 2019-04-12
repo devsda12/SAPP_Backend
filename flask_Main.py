@@ -144,7 +144,6 @@ class flask_Main:
         # Retrieve a needed profile picture from the database when it was enabled in getChats
         @self.flaskApp.route("/sapp_getProfilePic/<profilePicId>", methods=["GET"])
         def sapp_getProfilePic(profilePicId):
-            print(self.profilePicsToBeRequested)
             #First checking if the profilePicId is in the current list of profile pic id's that may be requested
             if profilePicId in self.profilePicsToBeRequested:
                 #First removing it from the list

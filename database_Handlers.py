@@ -58,6 +58,10 @@ class database_Handlers:
         result = self.sapp_cursor.fetchone()
 
         if "profilePictureId" in requestContent:
+            print(result[0])
+            print(type(result[0]))
+            print(requestContent["profilePictureId"])
+            print(type(requestContent["profilePictureId"]))
             if result[0] != requestContent["profilePictureId"]:
                 return result[0]
         else:
