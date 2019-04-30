@@ -471,6 +471,21 @@ class database_Handlers:
         #Returning true if everything has gone smooth
         return True
 
+        # changing password in database
+
+    def changeQuote(self, requestContent):
+        requestaccount_id = requestContent["acc_Id"]
+        requestedQuote = requestContent["acc_Quote"]
+
+        self.sapp_cursor.execute('SELECT acc_Quote FROM Acc_Table WHERE acc_Id = "' + requestaccount_id + '";')
+        result = self.sapp_cursor.fetchone()
+
+        if str(result[0]) == str(requestedQuote):
+            self.sapp_cursor.execute('UPDATE Acc_Table SET acc_Quote = "' + requestedQuote + '" WHERE acc_Id = "' + requestaccount_id + '";')
+            self.sapp_database.commit()
+            return True
+        else:
+            return False
 
     # NON-database functions
 
