@@ -391,6 +391,7 @@ class flask_Main:
             print("Change profile pic print: User not logged in or inserting went wrong")
             return "Upload unsuccessful"
 
+
         @self.flaskApp.route("/sapp_changeQuote", methods=["POST"])
         def sapp_changeQuote():
             if request.is_json:
