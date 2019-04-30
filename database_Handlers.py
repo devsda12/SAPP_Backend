@@ -480,7 +480,7 @@ class database_Handlers:
         self.sapp_cursor.execute('SELECT acc_Quote FROM Acc_Table WHERE acc_Id = "' + requestaccount_id + '";')
         result = self.sapp_cursor.fetchone()
 
-        if str(result[0]) == str(requestedQuote):
+        if str(result[0]) != str(requestedQuote):
             self.sapp_cursor.execute('UPDATE Acc_Table SET acc_Quote = "' + requestedQuote + '" WHERE acc_Id = "' + requestaccount_id + '";')
             self.sapp_database.commit()
             return True
