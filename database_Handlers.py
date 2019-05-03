@@ -471,8 +471,8 @@ class database_Handlers:
         #Returning true if everything has gone smooth
         return True
 
-        # changing password in database
 
+    # changing password in database
     def changeQuote(self, requestContent):
         requestaccount_id = requestContent["acc_Id"]
         requestedQuote = requestContent["acc_Quote"]
