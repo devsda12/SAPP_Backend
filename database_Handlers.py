@@ -42,13 +42,13 @@ class database_Handlers:
         requestedPassword = requestContent["acc_Password"]
 
         #Using query on the database
-        self.sapp_cursor.execute('SELECT acc_Id FROM Acc_Table WHERE acc_Username = "' + requestedUsername + '" AND acc_Password = "' + requestedPassword + '";')
+        self.sapp_cursor.execute('SELECT acc_Id, acc_Quote FROM Acc_Table WHERE acc_Username = "' + requestedUsername + '" AND acc_Password = "' + requestedPassword + '";')
         result = self.sapp_cursor.fetchall()
 
         if len(result) == 0:
             return False
         else:
-            requestedId = result[0][0]
+            requestedId = [result[0][0], result[0][1]]
             return requestedId
 
 
@@ -86,7 +86,7 @@ class database_Handlers:
             self.sapp_cursor.execute('SELECT acc_Id FROM Acc_Table WHERE acc_Id = "' + newAcc_Id + '";')
             result = self.sapp_cursor.fetchall()
             if len(result) == 0:
-                self.sapp_cursor.execute('INSERT INTO Acc_Table (acc_Id, acc_Username, acc_Password) VALUES ("' + newAcc_Id + '", "' + requestedUsername + '", "' + requestedPassword + '");')
+                self.sapp_cursor.execute('INSERT INTO Acc_Table (acc_Id, acc_Username, acc_Password, acc_Quote) VALUES ("' + newAcc_Id + '", "' + requestedUsername + '", "' + requestedPassword + '", "This is the default quote. Hi!");')
                 self.sapp_database.commit()
                 inserted = True
 
