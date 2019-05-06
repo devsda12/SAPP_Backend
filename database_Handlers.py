@@ -264,10 +264,10 @@ class database_Handlers:
         foundUsers = {}
         request_Username = requestContent[0]["acc_Username"]
 
-        self.sapp_cursor.execute('SELECT acc_Username, acc_Id FROM Acc_Table WHERE acc_Username LIKE "%' + request_Username + '%";')
+        self.sapp_cursor.execute('SELECT acc_Username, acc_Id, acc_Quote FROM Acc_Table WHERE acc_Username LIKE "%' + request_Username + '%";')
         result = self.sapp_cursor.fetchall()
         for item in result:
-            foundUsers[item[0]] = item[1]
+            foundUsers[item[0]] = [item[1], item[2]]
 
         # Checking whether the dict is empty
         if len(foundUsers) == 0:
