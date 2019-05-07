@@ -235,11 +235,11 @@ class database_Handlers:
 
                     #Under here checking if there is a custom image present
                     if partnerResult[0][1] != None:
-                        # Writing all the information to the dictionary in format dic[tablename] = [partner_Id, partner_Username, lastMessage, messageSender, messageDate, newProfilePictureId]
-                        chatsDict[item[0]] = [tempPartnerId, partnerResult[0][0], detailsResult[0][0], detailsResult[0][1], detailsResult[0][2], partnerResult[0][1]]
+                        # Writing all the information to the dictionary in format dic[tablename] = [partner_Id, partner_Username, partner_Quote, lastMessage, messageSender, messageDate, newProfilePictureId]
+                        chatsDict[item[0]] = [tempPartnerId, partnerResult[0][0], partnerResult[0][2], detailsResult[0][0], detailsResult[0][1], detailsResult[0][2], partnerResult[0][1]]
                     else:
-                        # Writing all the information to the dictionary in format dic[tablename] = [partner_Id, partner_Username, lastMessage, messageSender, messageDate, newProfilePictureId]
-                        chatsDict[item[0]] = [tempPartnerId, partnerResult[0][0], detailsResult[0][0], detailsResult[0][1], detailsResult[0][2], "null"]
+                        # Writing all the information to the dictionary in format dic[tablename] = [partner_Id, partner_Username, partner_Quote, lastMessage, messageSender, messageDate, newProfilePictureId]
+                        chatsDict[item[0]] = [tempPartnerId, partnerResult[0][0], partnerResult[0][2], detailsResult[0][0], detailsResult[0][1], detailsResult[0][2], "null"]
 
         # Checking whether the dict is empty
         if len(chatsDict) == 0:
