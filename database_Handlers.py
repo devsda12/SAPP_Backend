@@ -207,7 +207,7 @@ class database_Handlers:
                             tempPartnerId = tempSplitList[0]
 
                         # Nu wordt de partner informatie opgehaald van de db
-                        self.sapp_cursor.execute('SELECT acc_Username, acc_ProfilePictureId FROM Acc_Table WHERE acc_Id = "' + tempPartnerId + '";')
+                        self.sapp_cursor.execute('SELECT acc_Username, acc_ProfilePictureId, acc_Quote FROM Acc_Table WHERE acc_Id = "' + tempPartnerId + '";')
                         partnerResult = self.sapp_cursor.fetchall()
                     else:
                         doSomethingToFetchGroupConversationInfo = ""
@@ -220,13 +220,13 @@ class database_Handlers:
                     for content in iterContent:
                         if item[0] == content["conv_Id"]:
                             if partnerResult[0][1] != content["profilePic_Id"] and partnerResult[0][1] != None:
-                                # Writing all the information to the dictionary in format dic[tablename] = [partner_Id, partner_Username, lastMessage, messageSender, messageDate, newProfilePictureId]
-                                chatsDict[item[0]] = [tempPartnerId, partnerResult[0][0], detailsResult[0][0], detailsResult[0][1], detailsResult[0][2], partnerResult[0][1]]
+                                # Writing all the information to the dictionary in format dic[tablename] = [partner_Id, partner_Username, partner_Quote, lastMessage, messageSender, messageDate, newProfilePictureId]
+                                chatsDict[item[0]] = [tempPartnerId, partnerResult[0][0], partnerResult[0][2], detailsResult[0][0], detailsResult[0][1], detailsResult[0][2], partnerResult[0][1]]
                                 brokenFromInnerLoop = True
                                 break
                             else:
-                                # Writing all the information to the dictionary in format dic[tablename] = [partner_Id, partner_Username, lastMessage, messageSender, messageDate, newProfilePictureId]
-                                chatsDict[item[0]] = [tempPartnerId, partnerResult[0][0], detailsResult[0][0], detailsResult[0][1], detailsResult[0][2], "null"]
+                                # Writing all the information to the dictionary in format dic[tablename] = [partner_Id, partner_Username, partner_Quote, lastMessage, messageSender, messageDate, newProfilePictureId]
+                                chatsDict[item[0]] = [tempPartnerId, partnerResult[0][0], partnerResult[0][2], detailsResult[0][0], detailsResult[0][1], detailsResult[0][2], "null"]
                                 brokenFromInnerLoop = True
                                 break
 
