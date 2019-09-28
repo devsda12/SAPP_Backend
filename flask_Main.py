@@ -409,7 +409,7 @@ class flask_Main:
             return "unsuccessful"
 
         #For now defined here, this could be changed in the future if needed. Caused errors in the init function of the firebase handler
-        creds = credentials.Certificate("/home/back-end/sapp-firebase-notifications-firebase-adminsdk-bcjvu-cdca8ff155.json")
+        creds = credentials.Certificate("/home/sapp/sapp-firebase-notifications-firebase-adminsdk-bcjvu-cdca8ff155.json")
         sapp_app = firebase_admin.initialize_app(creds)
 
         #Here in the bottom of the run the actual api is run with flaskapp.

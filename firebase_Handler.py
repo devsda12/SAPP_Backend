@@ -6,7 +6,7 @@ class firebase_Handler:
 
     def __init__(self):
         #Declaring the global firebase variables
-        #self.creds = credentials.Certificate("/home/back-end/sapp-firebase-notifications-firebase-adminsdk-bcjvu-cdca8ff155.json")
+        #self.creds = credentials.Certificate("/home/sapp/sapp-firebase-notifications-firebase-adminsdk-bcjvu-cdca8ff155.json")
         #self.sapp_app = firebase_admin.initialize_app(self.creds)
         dummy = ""
 
